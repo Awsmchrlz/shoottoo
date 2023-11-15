@@ -1,0 +1,313 @@
+/********** Template CSS **********/
+:root {
+    --primary: #90db65;
+    --secondary: #191C24;
+    --light: #6C7293;
+    --dark: #000000;
+}
+
+.center{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+*{
+    box-sizing: border-box;
+    position: relative;
+}
+
+body{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--secondary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-repeat: no-repeat;
+    background-size:100vh;
+    
+}
+
+.modal{
+   position: fixed;
+    width: 80%;
+    max-width: 400px;
+    height: fit-content;
+    background-color: #fff;
+    top: 50%;
+    left: 50%;
+    align-self: center;
+    justify-self: center;
+    display: flex;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  
+}
+.overlay{
+    display: none;
+    position: fixed;
+}
+
+.modal.active{
+    display: flex;
+    animation: slideIn 0.5s ease;
+}
+
+.modal.inactive{
+    display: flex;
+    animation: slideOut 1s ease-out;
+    
+}
+
+.modal .header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 80%;
+    margin-top: 20px;
+}
+
+.header :nth-child(1){
+    font-size: 20px;
+}
+.header :nth-child(2){
+font-size: 40px;
+}
+
+
+.modal .footer{
+  margin: 10px;
+}
+
+
+@keyframes slideIn {
+    0% {
+        transform: translate(-50%,50%);
+    }
+    100% {
+        transform: translate(-50%, -50%);
+    }
+}
+
+
+@keyframes slideOut {
+    0% {
+        transform: translate(-50%,-50%);
+    }
+    100% {
+        transform: translate(-50%, 150%);
+        display: none;
+    }
+}
+
+
+
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .message {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 6px;
+  }
+
+  .sender {
+    
+    margin-bottom: 3px;
+    width: 100%;
+    text-align: left;
+  }
+
+  .time {
+    color: #666;
+    font-size: 10px;
+    width: 100%;
+    text-align: right;
+  }
+
+  .chatMessagesContainer{
+    min-height: fit-content;
+      max-height: 550px;
+      overflow-y: auto;
+flex-direction: column;
+padding-top: 140px;
+padding-bottom: 2px;
+  }
+
+  .message-container {
+    min-width: 290px;
+    max-width: 400px;
+    margin-bottom: 14px;
+    background-color: #ffffff63;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+
+  .message-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #cc00004d;
+    color: wheat;
+    border-bottom: 1px solid var(--secondary);
+  }
+
+  .sender-info {
+    display: flex;
+    align-items: center;
+  }
+
+  .sender-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 6px;
+    background-color: #ffffff; /* Add your icon/image here */
+  }
+
+  .message-body {
+    padding: 10px;
+    font-size: 14px;
+    color: white;
+  }
+
+  .timestamp {
+    color: wheat;
+    font-size: 12px;
+    margin: 4px;
+    margin-left: 7px;
+
+  }
+
+  .add-friend-button {
+    padding: 3px 5px;
+    background-color: var(--primary);
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .userInfo span div, .userInfo span a{
+    color: white;
+    padding: 3px;
+    border-radius: 5px;
+    margin-right: 5px;
+  }
+  .userInfo span div{
+    background-color: #90db65;
+
+  }
+
+  .userInfo span a{
+background-color: red;
+
+  }
+
+ 
+
+
+  .chatMessagesContainer{
+scroll-behavior: smooth;
+  }
+  @media screen {
+    
+  }
+
+  .tabs-container {
+    display: flex;
+    overflow: hidden;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .tab {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .tab:hover {
+    background-color: #ddd;
+  }
+
+  .tab-content {
+    display: none;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 0 0 5px 5px;
+  }
+
+  .tabs-container .active {
+    background-color: var(--primary);
+    color: #fff;
+    display: flex;
+  }
+
+  .modal .active{
+    display: flex;
+  }
+  
+  .tab-content h2{
+    color: rgb(0, 0, 0);
+  }
+
+  .overLay{
+    background-color: #000000b2;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    display: none;
+  }
+
+  .overLay.active{
+    display: flex;
+  }
+
+  .opacify{
+    opacity: 0;
+  }
+
+  .column{
+    flex-direction: column;
+  }
+
+  .row{
+    flex-direction: row;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 0.5em;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
+  
+  .custom-scrollbar {
+    overflow: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  

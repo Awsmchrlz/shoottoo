@@ -1,0 +1,15 @@
+body{
+    /* background-position: 0%; */
+    background-image: url(../img/backGround.jpg);
+}
+
+div h3{
+    text-align: center;
+    width: 100%;
+    font-weight: 900;
+    font-size: 30px;
+}
+input.form-control{
+    background-color: rgba(0, 0, 0, 0.735);
+    text-align: center;
+}

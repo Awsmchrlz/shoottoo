@@ -1,0 +1,313 @@
+<nav class="w-100 center">
+  <div class="userIcon modalButton" id="updateProfile">
+    <img
+      src="<%=user.imageUrl%>" alt=""
+      srcset=""
+    />
+  </div>
+  <div class="userInfo center">
+    <span id="cashContainer">Cash ~<%=user.accountBalance%></span>
+    <span id="nameContainer"><%=user.userName%></span>
+    <span id="numberContainer"><%=user.phoneNumber%></span>
+    <span class="center">
+      <a class="" href="auth/logout">signout</a>
+
+      <div id="hideInfo">hide</div>
+    </span>
+  </div>
+</nav>
+
+<br />
+<section class="center">
+  <div class="modalButton" id="createGame">Create Game</div>
+  <div class="modalButton" id="joinGame">Join Game</div>
+  <div><a href="/publicGames">Public Games</a></div>
+  <div class="modalButton" id="transact">Transact</div>
+</section>
+<div class="bottomSection">
+  <div id="chatMessagesContainer" class="chatMessagesContainer center custom-scrollbar">
+    
+   
+  </div>
+
+  <div class="sendSection">
+    <input id="messageInput" type="text" />
+    <button id="sendMessage" onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
+<div class="modal" id="createGame">
+  <div class="header">
+    <span>Create A Game</span>
+    <span class="closeModal" id="createGame">&times;</span>
+  </div>
+  <div class="body center">
+    <form action="" class="center column" method="post">
+      <div class="tabs-container">
+        <div class="tab cards-tab center active" onclick="showTab('cards')">
+          Cards
+        </div>
+        <div class="tab xando-tab center" onclick="showTab('xando')">
+          Tic-tac-toe
+        </div>
+        <div class="tab chess-tab center" onclick="showTab('chess')">Chess</div>
+        <div class="tab draughts-tab center" onclick="showTab('draughts')">
+          Draughts
+        </div>
+      </div>
+      <div class="tab-content cards-content active">
+        Play Twins and Followers, a captivating card game for real money with
+        friends and opponents.
+      </div>
+      <div class="tab-content xando-content">
+        Elevate Tic Tac Toe in a multiplayer card game, wager real money, and
+        showcase strategic brilliance globally.
+      </div>
+      <div class="tab-content chess-content">
+        Master online Chess, challenge global opponents for real money, and
+        reign as the chess champion.
+      </div>
+      <div class="tab-content draughts-content">
+        Dive into Draughts, compete for real money, and become the ultimate
+        checkerboard master.
+      </div>
+
+      <div class="selected-value">
+        Max Players: <span id="selectedValue">2</span>
+      </div>
+      <div class="form-check">
+        <input type="checkbox" name="isPrivate" class="form-check-input" id="exampleCheck1">
+        <label class="form-check-label" for="exampleCheck1">Private Game</label>
+    </div>
+      <div class="slider-container">
+        <input
+          type="range"
+          min="2"
+          max="4"
+          value="2"
+          step="1"
+          oninput="updateValue(this.value)"
+          name="maxPlayers"
+        />
+      </div>
+      <br />
+      <div class="inputFields">
+        <input
+          type="text"
+          class=""
+          name="gameId"
+          placeholder="Enter Room Name"
+          id=""
+          name="roomName"
+        />
+        <input
+          type="text"
+          class=""
+          name="gameId"
+          placeholder="Enter Password"
+          id=""
+          name="password"
+        />
+      </div>
+      <br />
+      <button type="submit">Create</button>
+    </form>
+  </div>
+  <div class="footer"></div>
+  <br />
+</div>
+
+<div class="modal" id="joinGame">
+  <div class="header">
+    <span>Join Game</span>
+    <span class="closeModal" id="joinGame">&times;</span>
+  </div>
+  <div class="body center joinGame">
+    <form action="" class="center column" method="post">
+      <input
+        type="text"
+        class=""
+        name="gameId"
+        placeholder="enter game link"
+        id=""
+      />
+      <br />
+      <button type="submit">Join Game</button>
+    </form>
+  </div>
+  <br />
+  <br />
+  <div class="footer"></div>
+</div>
+
+<div class="modal" id="transact">
+  <div class="header">
+    <span>Transact</span>
+    <span class="closeModal" id="transact">&times;</span>
+  </div>
+  <div class="body center column">
+    <div class="tabs-container">
+      <div class="tab deposit-tab center active" onclick="showTab('deposit')">
+        Deposit
+      </div>
+      <div class="tab withdraw-tab center" onclick="showTab('withdraw')">
+        Withdraw
+      </div>
+    </div>
+
+    <div class="tab-content column deposit-content active">
+      <div>Deposit 100K request from Account - <%=user.phoneNumber%></div>
+      <form action="" class="center column" method="post">
+        <input
+          type="text"
+          class=""
+          name="withdrawAmount"
+          placeholder="Enter Amount"
+          id=""
+        />
+        <br />
+        <button type="submit">Withdraw</button>
+      </form>
+    </div>
+
+    <div class="tab-content withdraw-content">
+      <div>Withdraw 100K from account - <%=user.phoneNumber%></div>
+      <form action="" class="center column" method="post">
+        <input
+          type="text"
+          class=""
+          name="depositAmount"
+          placeholder="Enter Amount"
+          id=""
+        />
+        <br />
+        <button type="submit">Deposit</button>
+      </form>
+    </div>
+  </div>
+  <div class="footer"></div>
+</div>
+
+<div class="modal" id="updateProfile">
+  <div class="header">
+    <span> Update Profile Image </span>
+    <span class="closeModal" id="updateProfile">&times;</span>
+  </div>
+
+  <form action="/updateUser" class="body center row" method="post">
+    <div class="center row imageHolder">
+      <img id="profileImage" src="<%=user.imageUrl%>" alt="image" srcset="">
+       <div id="changeImage">randomize</div>
+    </div>
+    <div class="center column">
+      <input type="text" placeholder="New UserName" name="userName" value="<%=user.userName%>">
+      <input type="text" placeholder="Phone Number" name="phoneNumber" value="<%=user.phoneNumber%>">
+      <input type="text" placeholder="email" name="email" id="" value="<%=user.email%>">
+      <input type="hidden" name="userId" value="<%=user.id%>">
+      <input type="hidden" id="newImageUrl" name="imageUrl" id="" value="<%=user.imageUrl%>">
+    
+      <button>Save</button>
+    </div>
+  </form>
+
+  <div class="footer"></div>
+</div>
+
+
+<div class="modal" id="notificationModal">
+  <div class="header">
+    <span>Notification</span>
+    <span class="closeModal" id="notificationModal">&times;</span>
+  </div>
+  <div class="body center notificationModal">
+   
+  </div>
+  <br />
+  <br />
+  <div class="footer"></div>
+</div>
+
+
+<div class="overLay"></div>
+
+<script>
+  function showTab(tabName) {
+    // Hide all content divs
+    document.querySelectorAll(".tab-content").forEach((content) => {
+      content.style.display = "none";
+    });
+
+    // Remove active class from all tabs
+    document.querySelectorAll(".tab").forEach((tab) => {
+      tab.classList.remove("active");
+    });
+
+    // Show the selected tab content and add the active class to the clicked tab
+    document.querySelector(`.${tabName}-content`).style.display = "block";
+    document.querySelector(`.${tabName}-tab`).classList.add("active");
+  }
+
+  function updateValue(value) {
+    document.getElementById("selectedValue").innerText = `${value}`;
+  }
+
+  document.getElementById("hideInfo").addEventListener("click", () => {
+    document.getElementById("cashContainer").classList.toggle("opacify");
+    setTimeout(() => {
+      document.getElementById("nameContainer").classList.toggle("opacify");
+    }, 300);
+    setTimeout(() => {
+      document.getElementById("numberContainer").classList.toggle("opacify");
+    }, 600);
+  });
+
+
+  
+
+
+
+  function changeProfileImage() {
+    // Increment the index and loop back to the first image if necessary
+  const seed = "asa"+Math.random().toString()
+    const newImageUrl = `https://api.dicebear.com/7.x/adventurer/svg?seed=${seed}`;
+  
+
+    // Update the image source
+    document.getElementById("profileImage").src = newImageUrl;
+    document.getElementById("newImageUrl").value = newImageUrl;
+  
+  }
+
+  function sendFriendRequest(friendId) {
+    // Implement the logic to send a friend request
+    // This could involve making an API call to your '/manageFriend' route with the friendId
+    // Example using fetch API:
+  document.getElementById("manageForm").submit();
+  }
+  
+  function removeFriend(friendId) {
+    // Implement the logic to remove a friend
+    // This could involve making an API call to your '/manageFriend' route with the friendId
+    // Example using fetch API:
+    document.getElementById("manageForm").submit();
+  }
+  
+  function checkIfFriends(userId, friendId) {
+    // Implement the logic to check if userId and friendId are friends
+    // This could involve checking a "friends" array in your database
+    // Return true if they are friends, false otherwise
+    // Example: return user.friends.includes(friendId);
+    return false; // Placeholder, update with actual logic
+  }
+
+  // Attach the click event to the "next" button
+  document.getElementById("changeImage").addEventListener("click", changeProfileImage);
+
+</script>
+
+<!-- <script src="/js/socketio.js>"></script> -->
+<input type="hidden" id="senderName" value="<%=user.userName%>">
+<input type="hidden" id="imageUrl" value="<%=user.imageUrl%>">
+<input type="hidden" id="userId" value="<%=user.id%>">
+
+

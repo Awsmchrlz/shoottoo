@@ -1,0 +1,218 @@
+
+
+body{
+    background-image: url(../img/backGround.jpg);
+}
+nav{
+    flex-direction: row;
+padding: 15px;
+max-width: 600px;
+background-color: rgba(0, 0, 0, 0.615);
+}
+
+nav .userIcon{
+ width: 80px;
+ height: 80px;
+ border: 1px solid grey;
+ box-shadow: inset 0px 0px 4px 2px black;
+ border-radius: 4px;
+}
+
+nav .userInfo{
+    flex-direction: column;
+    width: 80%;
+    align-items: flex-end;
+}
+
+section{
+    height: 40%;
+    width: 100%;
+    max-width: 800px;
+display: flex;
+flex-direction: column;
+    align-items: center;
+    justify-content: center;
+position: relative;
+
+}
+section div{
+    background-color: white;
+    width: 75%;
+    max-width: 350px;
+    margin: 4px;
+    text-align: center;
+    padding: 8px;
+ background-color: rgba(255,255,255,0.1); /* Semi-transparent white background */
+  backdrop-filter: blur(10px); /* Apply a blur effect to the background */
+  border-radius: 10px; 
+  color: var(--primary);
+  font-size: larger;
+}
+
+.bottomSection{
+    height:  fit-content;
+    width: 85%;
+    position: absolute;
+    bottom: 10px;
+}
+
+.chatMessagesContainer{
+    
+    background-color: rgba(72, 46, 46, 0.1); /* Semi-transparent white background */
+    backdrop-filter: blur(10px);
+    overflow-y: auto;
+    height: 190px;
+    max-height: 100%;
+}
+
+.sendSection{
+    height: fit-content;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+input{
+    border-radius: 5px;
+    margin-right: 4px;
+    border: 1px solid var(--primary);
+    min-height: 40px;
+    background-color: rgba(164, 0, 0, 0.1); /* Semi-transparent white background */
+    backdrop-filter: blur(10px);
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.modal button{
+    min-width: 100px;
+    width: fit-content;
+    height: 100%;
+    max-width: 180px;
+padding: 4px;
+    background-color: var(--primary);
+    border: 0px solid black;
+    border-radius: 4px;
+    font-size: 100%;
+font-weight: 600;
+color: #fff;
+}
+
+
+ 
+.sendSection input, .sendSection button{
+    margin: 3px;
+}
+
+.slider-container {
+    width: 300px;
+    position: relative;
+    margin-bottom: 9px;
+  }
+
+  input[type="range"] {
+    width: 100%;
+    height: 20px;
+    margin: 10px 0;
+    -webkit-appearance: none;
+    appearance: none;
+    outline: none;
+    
+  }
+
+
+  input[type="range"]::-webkit-slider-thumb:hover {
+    background-color: transparent; /* Maintain transparency on hover */
+  }
+ 
+  input[type="range"]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 10px;
+ background-color: azure;
+    border-radius: 5px;
+    border: 1px solid #ddd; /* Border for better visibility */
+ 
+  }
+
+  .selected-value {
+    text-align: center;
+    font-size: 24px;
+    color: rgb(177, 177, 177);
+}
+.selected-value span{
+    font-size: 30px;
+      color:var(--primary);
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100px;
+    height: 70px;
+    background-color: transparent;
+    background-image: url('../icon/handSelectIcon.png'); /* Replace with your image URL */
+    background-size: cover;
+    border: 0px solid #fff;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-top: -5px;
+
+  }
+
+  .inputFields{
+    width: 90%;
+  }
+
+  #updateProfile .body img{
+    width: 120px;
+    height: 120px;
+    margin-right: 100%;
+  }
+
+ .modal .imageHolder{
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+}
+.modal .imageHolder div{
+      
+width: 70px;
+position: absolute;
+right: 0%;
+  } 
+
+  #updateProfile input{
+    width: 80%;
+  }
+
+  .form-check{
+    
+    width: 70%;
+    display: flex;
+justify-content: center;
+align-items: center;
+gap: 30px;
+margin: 0;
+padding: 0;
+max-height: 30px;
+margin: 10px 0px;
+  }
+  
+  .form-check .form-check-input{
+width: 30px;
+max-height: 25px;
+margin: 0;
+padding: 0;
+background-color: #ddd;
+  }
+.form-check label{
+  font-size: 20px;
+}
+ 
+  
+  /* Styling when the checkbox is checked */
+  input[type="checkbox"]:checked {
+   background-color: #75f779;
+  }
