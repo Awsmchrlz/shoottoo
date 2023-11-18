@@ -46,7 +46,19 @@ router.post('/updateUser', async (req, res) => {
   });
 
 router.get("/publicGames", async (req, res) => {
-    const user = req.user;
+
+    const user = await User.findById(req.user._id);
+  
+   user.updateAccountBalance(2010,'yorSecretKey')
+
+    const isIntegrityVerified = user.verifyAccountBalance('yourSecretKey');
+    if (isIntegrityVerified) {
+      console.log('Account balance integrity verified.');
+    } else {
+      console.error('Account balance integrity check failed.');
+    }
+
+  
     try {
         res.render("pages/publicGames", {
             style:"publicGames",user,
@@ -58,9 +70,10 @@ router.get("/publicGames", async (req, res) => {
     }
 });
 
+
 router.post('/manageFriend', async (req, res) => {
     try {
-      const userId = req.user.id; // Assuming userId is available in req.user after authentication
+      const userId = req.user._id; // Assuming userId is available in req.user after authentication
       const friendId = req.body.friendId;
   console.log(userId+"/n"+ friendId)
       // Check if they are already friends
@@ -88,7 +101,26 @@ router.post('/manageFriend', async (req, res) => {
 
   router.post('/createGame', async (req, res) => {
     try {
-      const gameData = req.body; // Assuming your request body contains the necessary data
+      const {
+        gameType,
+        maxPlayers,
+        roomName,
+        password,
+        gameAdmin
+      } = req.body; // Assuming your request body contains the necessary data
+     
+      const gameData = {
+        gameType,
+        players: req.body.players,      
+        isPrivate: req.body.isPrivate === 'on', // Assuming it's a checkbox returning 'on' when checked
+        gameType,
+        players:[req.body.gameAdmin],
+        maxPlayers,
+        roomName,
+        password,
+        gameAdmin
+      }
+      
       const newGame = await Game.createGame(gameData);
       res.status(201).json(newGame);
     } catch (error) {
@@ -96,6 +128,10 @@ router.post('/manageFriend', async (req, res) => {
     }
   });
   
+
+
+
+
   async function checkIfFriends(userId, friendId) {
     try {
       const user = await User.findById(userId);
@@ -118,5 +154,10 @@ router.post('/manageFriend', async (req, res) => {
       return false;
     }
   }
+
+
+  
+
+
 
 module.exports = router;

@@ -1,5 +1,5 @@
 <nav class="w-100 center">
-  <div class="userIcon modalButton" id="updateProfile">
+  <div class="userIcon modalButton center" id="updateProfile">
     <img
       src="<%=user.imageUrl%>" alt=""
       srcset=""
@@ -19,10 +19,10 @@
 
 <br />
 <section class="center">
-  <div class="modalButton" id="createGame">Create Game</div>
-  <div class="modalButton" id="joinGame">Join Game</div>
-  <div><a href="/publicGames">Public Games</a></div>
-  <div class="modalButton" id="transact">Transact</div>
+  <div class="modalButton center" id="createGame">Create Game</div>
+  <div class="modalButton center" id="joinGame">Join Game</div>
+  <div class="center"><a href="/publicGames">Public Games</a></div>
+  <div class="modalButton center" id="transact">Transact</div>
 </section>
 <div class="bottomSection">
   <div id="chatMessagesContainer" class="chatMessagesContainer center custom-scrollbar">
@@ -42,17 +42,19 @@
     <span class="closeModal" id="createGame">&times;</span>
   </div>
   <div class="body center">
-    <form action="" class="center column" method="post">
+    <form action="/createGame" class="center column" method="post">
+      <div>Select a game.</div>
       <div class="tabs-container">
-        <div class="tab cards-tab center active" onclick="showTab('cards')">
-          Cards
+        <div class="tab cards cards-tab center active" onclick="showTab('cards')">
+          
         </div>
-        <div class="tab xando-tab center" onclick="showTab('xando')">
-          Tic-tac-toe
+        <div class="tab xando xando-tab center" onclick="showTab('xando')">
+         
         </div>
-        <div class="tab chess-tab center" onclick="showTab('chess')">Chess</div>
-        <div class="tab draughts-tab center" onclick="showTab('draughts')">
-          Draughts
+        <div class="tab chess chess-tab center" onclick="showTab('chess')">
+          </div>
+        <div class="tab draughts draughts-tab center" onclick="showTab('draughts')">
+          
         </div>
       </div>
       <div class="tab-content cards-content active">
@@ -75,14 +77,10 @@
       <div class="selected-value">
         Max Players: <span id="selectedValue">2</span>
       </div>
-      <div class="form-check">
-        <input type="checkbox" name="isPrivate" class="form-check-input" id="exampleCheck1">
-        <label class="form-check-label" for="exampleCheck1">Private Game</label>
-    </div>
       <div class="slider-container">
         <input
-          type="range"
-          min="2"
+        type="range"
+        min="2"
           max="4"
           value="2"
           step="1"
@@ -93,21 +91,32 @@
       <br />
       <div class="inputFields">
         <input
-          type="text"
+          type="hidden"
           class=""
-          name="gameId"
+        
           placeholder="Enter Room Name"
-          id=""
+          id="roomNameInput"
           name="roomName"
         />
+        <div class="selected-value">
+          Room Name: <div><span id="roomName"></span></div>
+          <div id="randomizeRoomName">randomize</div>
+        </div>
+        <br>
         <input
-          type="text"
-          class=""
-          name="gameId"
-          placeholder="Enter Password"
-          id=""
-          name="password"
+        type="text"
+        class=""
+        id=""
+        placeholder="Enter Password"
+        name="password"
         />
+        <div class="form-check">
+          <input type="checkbox" name="isPrivate" class="form-check-input" id="exampleCheck1">
+          <label class="form-check-label" for="exampleCheck1">Private Game</label>
+      </div>
+        <input type="hidden" name="gameAdmin" value="<%=user._id%>">
+    <input type="hidden" id="gameType" name="gameType" value="cards">
+    
       </div>
       <br />
       <button type="submit">Create</button>
@@ -122,8 +131,12 @@
     <span>Join Game</span>
     <span class="closeModal" id="joinGame">&times;</span>
   </div>
+  <br />
   <div class="body center joinGame">
     <form action="" class="center column" method="post">
+      <p>
+        Paste game link here
+      </p>
       <input
         type="text"
         class=""
@@ -131,7 +144,7 @@
         placeholder="enter game link"
         id=""
       />
-      <br />
+      <br>
       <button type="submit">Join Game</button>
     </form>
   </div>
@@ -245,13 +258,16 @@
     // Show the selected tab content and add the active class to the clicked tab
     document.querySelector(`.${tabName}-content`).style.display = "block";
     document.querySelector(`.${tabName}-tab`).classList.add("active");
+document.getElementById('gameType').value = tabName
   }
 
   function updateValue(value) {
     document.getElementById("selectedValue").innerText = `${value}`;
   }
-
-  document.getElementById("hideInfo").addEventListener("click", () => {
+const hideButton = document.getElementById("hideInfo");
+  hideButton.addEventListener("click", () => {
+    
+    hideButton.innerText == 'hide'?hideButton.innerText = 'show': hideButton.innerText = 'hide'; 
     document.getElementById("cashContainer").classList.toggle("opacify");
     setTimeout(() => {
       document.getElementById("nameContainer").classList.toggle("opacify");
@@ -261,8 +277,6 @@
     }, 600);
   });
 
-
-  
 
 
 

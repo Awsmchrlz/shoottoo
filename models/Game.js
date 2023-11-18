@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 
 const gameSchema = new mongoose.Schema({
   gameType: {
@@ -8,6 +10,16 @@ const gameSchema = new mongoose.Schema({
   players: {
     type: [String], // Assuming player IDs are stored as strings
     required: true,
+    default:[]
+  },
+  stakePerGame:{
+    type:Number,
+    default:5
+  }
+  ,
+  maxPlayers:{
+    type:Number,
+    default:2
   },
   roomName: {
     type: String,
@@ -16,14 +28,16 @@ const gameSchema = new mongoose.Schema({
   password: {
     type: String,
   },
-  isPublic: {
+  isPrivate: {
     type: Boolean,
     default: true,
   },
-  // Additional attributes can be added as needed
-  // ...
-
-  // Timestamps for created and updated
+  gameAdmin:{
+    type:String,
+    required:false,
+    default:''
+  }
+  ,
   createdAt: {
     type: Date,
     default: Date.now,
@@ -43,6 +57,23 @@ gameSchema.statics.createGame = async function (gameData) {
     throw new Error(error.message);
   }
 };
+
+
+gameSchema.pre('save', async function (next) {
+  const game = this;
+ 
+    try {
+      const hashedPassword = await bcrypt.hash(game.password, 10);
+      game.password = hashedPassword;
+     
+      return next();
+    } catch (err) {
+      return next(err);
+    }
+ 
+});
+
+
 
 // Instance method to update a game
 gameSchema.methods.updateGame = async function (updateData) {

@@ -35,4 +35,3 @@ closeModalButtons.forEach(closeModalButton=>{
     })
 })
 
-

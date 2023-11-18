@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
+
 const userSchema = new mongoose.Schema({
   userName: {
     type: String,
@@ -60,6 +62,11 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  accountBalance: {
+    type: Number,
+    default: 0,
+  },
+  accountBalanceSignature: String,
 });
 
 // Hash the password before saving to the database
@@ -69,6 +76,9 @@ userSchema.pre('save', async function (next) {
     try {
       const hashedPassword = await bcrypt.hash(user.password, 10);
       user.password = hashedPassword;
+      const secretKey = 'yourSecretKey'; // Replace with a secure secret key
+user.updateAccountBalance(150, secretKey);
+
       return next();
     } catch (err) {
       return next(err);
@@ -76,7 +86,6 @@ userSchema.pre('save', async function (next) {
   } else {
     return next();
   }
-  
 });
 
 
@@ -103,6 +112,36 @@ userSchema.methods.setImageUrl = async function (newImageUrl) {
   }
 };
 
+
+// Method to update and sign account balance
+userSchema.methods.updateAccountBalance = async function (newBalance, secretKey) {
+  // Update account balance
+  this.accountBalance = newBalance;
+
+  // Create a hash of the account balance
+  const hash = crypto.createHash('sha256');
+  hash.update(`${this.accountBalance}${secretKey}`);
+  const signature = hash.digest('hex');
+
+  // Verify the signature before saving
+
+
+  // Save the signature to the user's document
+  this.accountBalanceSignature = signature;
+
+  // Save the updated user
+  await this.save();
+};
+
+// Method to verify account balance integrity
+userSchema.methods.verifyAccountBalance = function (secretKey) {
+  // Recreate the hash and compare with the stored signature
+  const hash = crypto.createHash('sha256');
+  hash.update(`${this.accountBalance}${secretKey}`);
+  const recalculatedSignature = hash.digest('hex');
+
+  return this.accountBalanceSignature === recalculatedSignature;
+};
 
 const User = mongoose.model('User', userSchema);
 

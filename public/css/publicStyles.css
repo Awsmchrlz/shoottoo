@@ -1,9 +1,11 @@
 /********** Template CSS **********/
 :root {
-    --primary: #90db65;
+  
+    --primary: #34db71;
     --secondary: #191C24;
     --light: #6C7293;
     --dark: #000000;
+    --textColor:#333333;
 }
 
 .center{
@@ -15,6 +17,7 @@
 *{
     box-sizing: border-box;
     position: relative;
+    font-family: 'Agbalumo', sans-serif;
 }
 
 body{
@@ -123,7 +126,8 @@ font-size: 40px;
   .message {
     font-size: 14px;
     line-height: 1.5;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
+    
   }
 
   .sender {
@@ -147,25 +151,28 @@ font-size: 40px;
 flex-direction: column;
 padding-top: 140px;
 padding-bottom: 2px;
+
   }
 
   .message-container {
-    min-width: 290px;
-    max-width: 400px;
-    margin-bottom: 14px;
-    background-color: #ffffff63;
+    min-width: 240px;
+    max-width: 390px;
+    margin-bottom: 10px;
+    background-color: #ffffffa4;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    
   }
 
   .message-header {
     display: flex;
     justify-content: space-between;
     padding: 10px;
-    background-color: #cc00004d;
+    padding-bottom: 3px;
+    background-color: var(--primary);
     color: wheat;
-    border-bottom: 1px solid var(--secondary);
+    
   }
 
   .sender-info {
@@ -174,24 +181,26 @@ padding-bottom: 2px;
   }
 
   .sender-image {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
     margin-right: 6px;
     background-color: #ffffff; /* Add your icon/image here */
   }
 
   .message-body {
-    padding: 10px;
-    font-size: 14px;
+    padding: 4px;
+    
+    font-size: 10px;
     color: white;
   }
 
   .timestamp {
-    color: wheat;
-    font-size: 12px;
+    color: rgb(255, 255, 255);
+    font-size: 14px;
     margin: 4px;
     margin-left: 7px;
+    text-align: right;
 
   }
 
@@ -310,4 +319,31 @@ scroll-behavior: smooth;
     scrollbar-width: none;
   }
 
-  
+.closeModal{
+  background-image: url('../icon/closeIcon.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  color: rgba(255, 0, 0, 0);
+}
+
+.tab{
+
+  min-height: 80px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.chess{
+  background-image: url('../icon/chess.png');
+}
+.draughts{
+  background-image: url('../icon/checkers.png');
+}
+.xando{
+  background-image: url('../icon/xando.png');
+}
+.cards{
+  background-image: url('../icon/cards.png');
+}

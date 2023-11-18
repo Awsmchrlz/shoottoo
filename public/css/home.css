@@ -11,17 +11,27 @@ background-color: rgba(0, 0, 0, 0.615);
 }
 
 nav .userIcon{
- width: 80px;
- height: 80px;
- border: 1px solid grey;
+ width: 100px;
+ height: 100px;
+border: 1px solid gainsboro;
  box-shadow: inset 0px 0px 4px 2px black;
  border-radius: 4px;
+ background-image: url('../icon/profilePan.png');
+ background-repeat: no-repeat;
+ background-position: center;
+ background-size: contain;
+
 }
 
 nav .userInfo{
     flex-direction: column;
     width: 80%;
     align-items: flex-end;
+}
+
+nav .userIcon img{
+  width: 75px;
+  height: 75px;
 }
 
 section{
@@ -36,17 +46,60 @@ position: relative;
 
 }
 section div{
-    background-color: white;
-    width: 75%;
-    max-width: 350px;
-    margin: 4px;
+    width: 70%;
+    max-width: 340px;
+    margin: 2px;
+    height: 24%;
     text-align: center;
-    padding: 8px;
- background-color: rgba(255,255,255,0.1); /* Semi-transparent white background */
-  backdrop-filter: blur(10px); /* Apply a blur effect to the background */
-  border-radius: 10px; 
-  color: var(--primary);
-  font-size: larger;
+    font-size: larger;
+    display: inline-block;
+    padding: 15px 25px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+    text-transform: uppercase;
+    border-radius: 8px;
+    background: #34db71;
+    border: 2px solid #5cc2c9;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+    /* background-image: url('../icon/button.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position-x: center; */
+  }
+
+  section div:before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.4), transparent);
+    transform: rotate(45deg);
+    transition: all 0.5s;
+  }
+  
+  section div:hover:before {
+    top: -10%;
+    left: -10%;
+  }
+  
+  section div:active {
+    transform: translateY(3px);
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+  }
+  section div:hover{
+    transform: translate(3px,3px);
+    transition: ease;
+  }
+  section div a, section div{
+    font-weight: 700;
+    color: #333333;
+    font-size: 27px;
 }
 
 .bottomSection{
@@ -57,12 +110,11 @@ section div{
 }
 
 .chatMessagesContainer{
-    
-    background-color: rgba(72, 46, 46, 0.1); /* Semi-transparent white background */
-    backdrop-filter: blur(10px);
+
+   
     overflow-y: auto;
-    height: 190px;
-    max-height: 100%;
+    min-height: fit-content;
+    max-height: 300px;
 }
 
 .sendSection{
@@ -76,10 +128,12 @@ section div{
 input{
     border-radius: 5px;
     margin-right: 4px;
+    color:  white;
     border: 1px solid var(--primary);
     min-height: 40px;
-    background-color: rgba(164, 0, 0, 0.1); /* Semi-transparent white background */
+    background-color: var(--dark); /* Semi-transparent white background */
     backdrop-filter: blur(10px);
+   padding: 10px;
     width: 100%;
     max-width: 400px;
     margin-bottom: 10px;
@@ -97,7 +151,7 @@ padding: 4px;
     border-radius: 4px;
     font-size: 100%;
 font-weight: 600;
-color: #fff;
+color: #333333;
 }
 
 
@@ -215,4 +269,18 @@ background-color: #ddd;
   /* Styling when the checkbox is checked */
   input[type="checkbox"]:checked {
    background-color: #75f779;
+  }
+
+  #sendMessage, .modal button{
+    background-color: #75f779;
+    font-size: 20px;
+    border: #24ff2b 2px solid;
+    font-weight: 600;
+    border-radius: 8px;
+  }
+
+  .chatMessagesContainer p{
+    margin: 0;
+    font-size: 20px;
+    color: var(--textColor);
   }

@@ -92,5 +92,60 @@ function getCurrentTimestamp() {
   return Math.floor(Date.now() / 1000); // Convert to seconds
 }
 
-// Example usage
-const currentTimestamp = getCurrentTimestamp();
+// room name generator
+class RoomNameGenerator {
+  constructor(adjectives, nouns) {
+    this.adjectives = adjectives;
+    this.nouns = nouns;
+  }
+
+  getRandomElement(array) {
+    return array[Math.floor(Math.random() * array.length)];
+  }
+
+  generateRoomName() {
+    const adjective = this.getRandomElement(this.adjectives);
+    const noun = this.getRandomElement(this.nouns);
+   
+    return `${adjective} ${noun}`;
+  }
+}
+
+// Extended arrays of adjectives and nouns
+const adjectives = [
+  'Mystic', 'Electric', 'Golden', 'Crystal', 'Ancient',
+  'Whimsical', 'Enchanted', 'Radiant', 'Ethereal', 'Dazzling',
+  'Vibrant', 'Celestial', 'Serene', 'Mythical', 'Spectral',
+  'Luminous', 'Tranquil', 'Astral', 'Harmonious', 'Epic'
+];
+const nouns = [
+  'Castle', 'Labyrinth', 'Realm', 'Citadel', 'Sanctuary',
+  'Oracle', 'Haven', 'Chamber', 'Domain', 'Emporium',
+  'Fortress', 'Grove', 'Enclave', 'Refuge', 'Hideaway',
+  'Oasis', 'Eden', 'Shrine', 'Expanse', 'Abyss'
+];
+
+
+// Generate a room name
+
+
+
+// Initialize the generator
+const generator = new RoomNameGenerator(adjectives, nouns);
+
+const roomNameInput = document.getElementById('roomNameInput')
+const roomName = document.getElementById('roomName')
+
+var randomRoomName = generator.generateRoomName();
+
+roomName.innerHTML = randomRoomName;
+roomNameInput.value = randomRoomName;
+
+
+const randomizeRoomName = document.getElementById('randomizeRoomName')
+
+randomizeRoomName.addEventListener('click',()=>{
+randomRoomName = generator.generateRoomName();
+  roomName.innerHTML = randomRoomName;
+roomNameInput.value = randomRoomName;
+})
