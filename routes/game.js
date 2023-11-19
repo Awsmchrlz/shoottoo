@@ -47,50 +47,79 @@ router.post('/createGame', async (req, res) => {
   router.post('/joinGame', async (req, res) => {
     try {
       const { gameLink } = req.body;
-      const user = req.user
+      const user = req.user;
   
       // Query the game details using the provided game link
       const game = await Game.findOne({ gameLink });
   
       if (!game) {
         // Handle case when the game link doesn't exist
-        res.redirect('/errorPage'); // Redirect to an error page or handle the situation accordingly
+        res.redirect('/game/gamenotfound');
         return;
       }
   
-      // Determine the redirect URL based on the game type from the retrieved game details
-      let gamePage = 'errorPage'; // Default game page for unknown game types or errors
-      if (game) {
-        gamePage = `gamePages/`+game.gameType; // Cards game page
-      } 
-      // Add other game types as needed
+      // Check if the game is not full
+      if (game.players.length < game.maxPlayers) {
+        // Add the player to the game
+        const isPlayerInGame = game.players.includes(user._id);
+
+      if (!isPlayerInGame) {
+        // Add the player to the game
+        game.players.push(user._id); // Assuming player IDs are stored in the 'players' array
+
+        // Save the updated game with the new player
+        await game.save();
+      }
+
+        // Save the updated game with the new player
+        await game.save();
   
-      // Render the game page with the retrieved game object
-      res.render(gamePage, { game,
-        style:game.gameType,
-        user,
-        script:game.gameType});
+        // Determine the redirect URL based on the game type from the retrieved game details
+        let gamePage = 'errorPage'; // Default game page for unknown game types or errors
+        if (game) {
+          gamePage = `gamePages/${game.gameType}`; // Redirect to the specific game page
+        }
+        // Add other game types as needed
+  
+        // Render the game page with the retrieved game object
+        res.render(gamePage, {
+          game,
+          style: game.gameType,
+          user,
+          script: game.gameType,
+          layout: 'layouts/gameLayout',
+        });
+      } else {
+        // Game is full, handle accordingly
+        res.redirect('/game/gamefull');
+      }
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
   });
   
-  
-  
+
  // Function to generate a unique game link
-function generateUniqueGameLink(roomName) {
-    // Replace spaces in roomName with dashes and convert to lowercase for URL friendliness
-    const formattedRoomName = roomName.replace(/\s+/g, '-').toLowerCase();
-  
-    // Generate a timestamp to make the link more unique
-    const timestamp = Date.now();
-  
-    // Combine roomName with timestamp to create the game link
-    const gameLink = `${formattedRoomName}-${timestamp}`;
-  
-    return gameLink;
-  }
+
     
+ function generateUniqueGameLink(roomName) {
+  const formattedRoomName = roomName.replace(/\s+/g, '-').toLowerCase();
+  const characters = 'ilnou17'; // Characters for uniqueness
+  const timestamp = Date.now();
+
+  // Generate characters to surround the roomName and timestamp
+  let prefix = '';
+  let suffix = '';
+  for (let i = 0; i < 8; i++) {
+    prefix += characters.charAt(Math.floor(Math.random() * characters.length));
+    suffix += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+
+  // Combine all elements to create the game link
+  const gameLink = `${prefix}-${formattedRoomName}-${suffix}`;
+
+  return gameLink;
+}
 
 
 

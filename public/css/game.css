@@ -97,17 +97,38 @@ input{
   width: fit-content;
   height: 100%;
   max-width: 180px;
-padding: 4px;
-  font-size: 100%;
+padding: 6px;
+  font-size: 30px;
 font-weight: 600;
 color: #333333;
 background-color: #75f779;
 font-size: 20px;
 border: #24ff2b 2px solid;
-font-weight: 600;
+font-weight: 800;
 border-radius: 8px;
 }
 
 .sendSection input, .sendSection button{
   margin: 3px;
+}
+
+h2{
+  color: #2d2d2d;
+  font-weight: 900;
+  padding: 8px;
+}
+
+h4{
+  color: rgb(0, 60, 13);
+  font-size: 18px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.modal{
+  width: 95%;
+}
+#copyGameLink{
+  font-size: 26px;
+  padding: 5px;
 }

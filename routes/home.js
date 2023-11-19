@@ -49,7 +49,7 @@ router.get("/publicGames", async (req, res) => {
 
     const user = await User.findById(req.user._id);
   
-  
+
 
   
     try {

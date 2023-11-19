@@ -133,14 +133,14 @@
   </div>
   <br />
   <div class="body center joinGame">
-    <form action="" class="center column" method="post">
+    <form action="/game/joinGame" class="center column" method="post">
       <p>
         Paste game link here
       </p>
       <input
         type="text"
         class=""
-        name="gameId"
+        name="gameLink"
         placeholder="enter game link"
         id=""
       />
@@ -218,7 +218,6 @@
       <input type="text" placeholder="email" name="email" id="" value="<%=user.email%>">
       <input type="hidden" name="userId" value="<%=user.id%>">
       <input type="hidden" id="newImageUrl" name="imageUrl" id="" value="<%=user.imageUrl%>">
-    
       <button>Save</button>
     </div>
   </form>
@@ -276,8 +275,6 @@ const hideButton = document.getElementById("hideInfo");
       document.getElementById("numberContainer").classList.toggle("opacify");
     }, 600);
   });
-
-
 
 
   function changeProfileImage() {

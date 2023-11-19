@@ -36,6 +36,11 @@ const gameSchema = new mongoose.Schema({
     type:String,
     required:false,
     default:''
+  },
+  gameLink:{
+    type:String,
+    required:true,
+    default:''
   }
   ,
   createdAt: {
