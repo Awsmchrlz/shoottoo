@@ -49,14 +49,7 @@ router.get("/publicGames", async (req, res) => {
 
     const user = await User.findById(req.user._id);
   
-   user.updateAccountBalance(2010,'yorSecretKey')
-
-    const isIntegrityVerified = user.verifyAccountBalance('yourSecretKey');
-    if (isIntegrityVerified) {
-      console.log('Account balance integrity verified.');
-    } else {
-      console.error('Account balance integrity check failed.');
-    }
+  
 
   
     try {
@@ -128,7 +121,6 @@ router.post('/manageFriend', async (req, res) => {
     }
   });
   
-
 
 
 

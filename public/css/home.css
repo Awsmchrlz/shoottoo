@@ -3,6 +3,7 @@
 body{
     background-image: url(../img/backGround.jpg);
 }
+
 nav{
     flex-direction: row;
 padding: 15px;
@@ -116,44 +117,6 @@ section div{
     min-height: fit-content;
     max-height: 300px;
 }
-
-.sendSection{
-    height: fit-content;
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-input{
-    border-radius: 5px;
-    margin-right: 4px;
-    color:  white;
-    border: 1px solid var(--primary);
-    min-height: 40px;
-    background-color: var(--dark); /* Semi-transparent white background */
-    backdrop-filter: blur(10px);
-   padding: 10px;
-    width: 100%;
-    max-width: 400px;
-    margin-bottom: 10px;
-    text-align: center;
-}
-
-.modal button{
-    min-width: 100px;
-    width: fit-content;
-    height: 100%;
-    max-width: 180px;
-padding: 4px;
-    background-color: var(--primary);
-    border: 0px solid black;
-    border-radius: 4px;
-    font-size: 100%;
-font-weight: 600;
-color: #333333;
-}
-
 
  
 .sendSection input, .sendSection button{

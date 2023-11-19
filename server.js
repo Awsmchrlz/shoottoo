@@ -20,6 +20,7 @@ const io = require('socket.io')(http); // Integrate Socket.IO with the server
 const homeRouter = require('./routes/home');
 const authRouter = require('./routes/auth');
 const transactionsRouter = require('./routes/transactions');
+const gameRouter = require('./routes/game');
 
 
 const { ensureAuthenticated} = require('./config/auth');
@@ -105,7 +106,10 @@ function getCurrentTimestamp() {
 
 app.use('/auth', authRouter);
 app.use('/', ensureAuthenticated,homeRouter);
+app.use('/game', gameRouter);
 app.use('/transactions', transactionsRouter);
+
+
 
 http.listen(process.env.PORT || 3000, () => console.log(`Listening on port `));
 app.listen(process.env.PORT || 3001, () => console.log('Server is Running'))

@@ -1,0 +1,113 @@
+nav{
+    flex-direction: row;
+padding: 15px;
+max-width: 600px;
+background-color: rgba(0, 0, 0, 0.615);
+}
+
+nav .userIcon{
+ width: 100px;
+ height: 100px;
+border: 1px solid gainsboro;
+ box-shadow: inset 0px 0px 4px 2px black;
+ border-radius: 4px;
+ background-image: url('../icon/profilePan.png');
+ background-repeat: no-repeat;
+ background-position: center;
+ background-size: contain;
+
+}
+
+nav .userInfo{
+    flex-direction: column;
+    width: 80%;
+    align-items: flex-end;
+}
+
+nav .userIcon img{
+  width: 75px;
+  height: 75px;
+}
+
+
+h3{
+  font-family: 'Agbalumo', sans-serif;
+  font-size: 60px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.gameDetails {
+  margin-top: 5px;
+  padding: 20px;
+  padding-bottom: 0px;
+  border-radius: 5px;
+  background-color: #0000008e;
+  width: 90%;
+}
+
+.gameDetails p{
+  margin: 0;
+  text-align: left;
+}
+
+ p span{
+  color: var(--primary);
+  padding: 0;
+  font-size: 22px;
+
+}
+.players-section{
+  width: 90%;
+}
+
+.sendSection{
+  position: fixed;
+  bottom: 4px;
+}
+
+
+.sendSection{
+  height: fit-content;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+}
+
+input{
+  border-radius: 5px;
+  margin-right: 4px;
+  color:  white;
+  border: 1px solid var(--primary);
+  min-height: 40px;
+  background-color: var(--dark); /* Semi-transparent white background */
+  backdrop-filter: blur(10px);
+ padding: 0px 5px;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+
+ button{
+  min-width: 100px;
+  width: fit-content;
+  height: 100%;
+  max-width: 180px;
+padding: 4px;
+  font-size: 100%;
+font-weight: 600;
+color: #333333;
+background-color: #75f779;
+font-size: 20px;
+border: #24ff2b 2px solid;
+font-weight: 600;
+border-radius: 8px;
+}
+
+.sendSection input, .sendSection button{
+  margin: 3px;
+}

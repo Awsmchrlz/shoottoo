@@ -61,15 +61,17 @@ gameSchema.statics.createGame = async function (gameData) {
 
 gameSchema.pre('save', async function (next) {
   const game = this;
- 
-    try {
-      const hashedPassword = await bcrypt.hash(game.password, 10);
+  const saltRounds = 10; // Increasing rounds increases hashing time
+
+  try {
+    if (game.isModified('password')) {
+      const hashedPassword = await bcrypt.hash(game.password, saltRounds);
       game.password = hashedPassword;
-     
-      return next();
-    } catch (err) {
-      return next(err);
     }
+    return next();
+  } catch (err) {
+    return next(err);
+  }
  
 });
 
