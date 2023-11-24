@@ -1,1 +1,22 @@
-publicGames
+
+ <div class="title-section">
+    <h1>Welcome to the Public Games Arena!</h1>
+
+</div>
+
+<div id="gamesContainer" class="container">
+    <% games.forEach(game => { %>
+        <div class="game-card">
+            <h2><%= game.roomName %></h2>
+            <p class="game-type"><%= game.gameType %></p>
+            <p><strong>Players:</strong> <%= game.players.length %>/<%= game.maxPlayers %></p>
+            <p><strong>Stake Per Game:</strong> K<%= game.stakePerGame %></p>
+            <p><strong>Private:</strong> <%= game.isPrivate ? 'Yes' : 'No' %></p>
+            <!-- Add more game details as needed -->
+            <form action="/game/joingame" method="post">
+                <input type="hidden" name="gameLink" value="<%=game.gameLink%>">
+                <button class="join-button">Join Game</button>
+            </form>
+        </div>
+    <% }) %>
+</div>

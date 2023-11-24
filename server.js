@@ -1,60 +1,68 @@
-require("dotenv").config()
-const express = require('express')
+require("dotenv").config();
+const express = require("express");
 const app = express();
-const expressLayouts = require('express-ejs-layouts')
-const bodyParser = require('body-parser')
+const expressLayouts = require("express-ejs-layouts");
+const bodyParser = require("body-parser");
 
-const session = require('express-session');
-const flash = require('connect-flash');
+const session = require("express-session");
+const flash = require("connect-flash");
 
-const mongoose = require('mongoose')
-const passport = require('passport')
+const mongoose = require("mongoose");
+const passport = require("passport");
 
-
-const http = require('http').createServer(app); // Create an HTTP server instance
-const io = require('socket.io')(http); // Integrate Socket.IO with the server
+const http = require("http").createServer(app); // Create an HTTP server instance
+const io = require("socket.io")(http); // Integrate Socket.IO with the server
 
 // configure passport
 
-//route definition 
-const homeRouter = require('./routes/home');
-const authRouter = require('./routes/auth');
-const transactionsRouter = require('./routes/transactions');
-const gameRouter = require('./routes/game');
+//route definition
+const homeRouter = require("./routes/home");
+const authRouter = require("./routes/auth");
+const transactionsRouter = require("./routes/transactions");
+const gameRouter = require("./routes/game")(io); // Passing the io instance to gameRoutes
 
+const Game = require("./models/Game");
+const User = require("./models/User");
 
-const { ensureAuthenticated} = require('./config/auth');
+// Game.deleteMany({}).then((done)=>{
+//   console.log(done)
+// })
+
+const { ensureAuthenticated } = require("./config/auth");
 
 ////////////database connection////////////
 
-
-const localDB = "mongodb://localhost:27017/shoottoodb1";
+const localDB = "mongodb://localhost:27017/shoottoodb";
 // process.env.MONGODBURL
 
-mongoose.set('strictQuery', true);
-mongoose.connect(localDB,{useNewUrlParser: true}).then(() => {
-  console.log('database is connected')
-}).catch((err) => console.log('error connecting to database ', err));
-  
+mongoose.set("strictQuery", true);
+mongoose
+  .connect(localDB, { useNewUrlParser: true })
+  .then(() => {
+    console.log("database is connected");
+  })
+  .catch((err) => console.log("error connecting to database ", err));
 
 ////setting up the server///////
 // Configure Passport
 
- require('./config/passport')(passport);
+require("./config/passport")(passport);
 
-app.set('view engine', 'ejs')
-app.set('views', __dirname + '/views/')
-app.set('layout', 'layouts/layout')
-app.use(expressLayouts)
-app.use(express.static(__dirname + '/public'))
-app.use(bodyParser.urlencoded({ limit: '10mb', extended: false }))
-app.use(express.urlencoded({ extended: false }))
+app.set("view engine", "ejs");
+app.set("views", __dirname + "/views/");
+app.set("layout", "layouts/layout");
+app.use(expressLayouts);
+app.use(express.static(__dirname + "/public"));
+app.use(bodyParser.urlencoded({ limit: "10mb", extended: false }));
+app.use(express.urlencoded({ extended: false }));
 
-app.use(session({
-  secret: 'mysecret',
-  resave: false,
-  saveUninitialized: false    
-}));
+app.use(
+  session({
+    secret: "mysecret",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
 app.use(flash());
 app.use(passport.initialize());
@@ -66,23 +74,66 @@ app.use((req, res, next) => {
   next();
 });
 
+io.on("connection", (socket) => {
+  console.log("A user connected");
 
+  // Emit initial messages to the newly connected client
+  socket.emit("initialMessages", getLatestMessages());
 
-
-  io.on('connection', (socket) => {
-    console.log('A user connected');
-  
-    // Emit initial messages to the newly connected client
-    socket.emit('initialMessages', getLatestMessages());
-  
-    // Listen for messages from clients
-    socket.on('message', (data) => {
-    
-      const message = { senderName:data.senderName, message: data.message, timeStamp: getCurrentTimestamp(), imageUrl:data.imageUrl,userId:data.userId };
-      addMessage(message);
-      io.emit('message', message); // Broadcast the message to all connected clients
-    });
+  // Listen for messages from clients
+  socket.on("message", (data) => {
+    const message = {
+      senderName: data.senderName,
+      message: data.message,
+      timeStamp: getCurrentTimestamp(),
+      imageUrl: data.imageUrl,
+      userId: data.userId,
+    };
+    addMessage(message);
+    io.emit("message", message); // Broadcast the message to all connected clients
   });
+
+  socket.on("gameMessage", (data) => {
+    console.log(data);
+    io.emit("gameMessage", data);
+  });
+
+  socket.on("getPlayers", async (data) => {
+    const gameId = data.gameId;
+    // const game = Game.findOne({gameLink:gameLink})
+  });
+
+  socket.on("joinGame", ({ userName, userId, gameId, imageUrl }) => {
+    // if (game.players.length < 2) {
+    Game.findOne({ _id: gameId }).then((game) => {
+      if(game){
+      let flag = false;
+        game.players.forEach((player) => {
+          if (userId == player.userId) {
+            flag = true;
+          }
+        });
+        if (!flag) {
+          game.playerJoin({
+            userName,
+          imageUrl,
+          userId,
+          symbol: game.players.length == 0 ? "X" : "O",
+        });
+      }
+      console.log("game found", game);
+      io.emit("gameDetails", { players: game.players });
+    }
+    });
+    // }
+  });
+
+  socket.on("makeMove", ({ index, userId, symbol }) => {
+    console.log(index);
+
+    io.emit("updateBoard", { index, userId, symbol });
+  });
+});
 
 
 const MAX_MESSAGES = 5;
@@ -104,12 +155,11 @@ function getCurrentTimestamp() {
 }
 
 
-app.use('/auth', authRouter);
-app.use('/', ensureAuthenticated,homeRouter);
-app.use('/game', gameRouter);
-app.use('/transactions', transactionsRouter);
 
+app.use("/auth", authRouter);
+app.use("/", ensureAuthenticated, homeRouter);
+app.use("/game", gameRouter);
+app.use("/transactions", transactionsRouter);
 
 
 http.listen(process.env.PORT || 3000, () => console.log(`Listening on port `));
-app.listen(process.env.PORT || 3001, () => console.log('Server is Running'))

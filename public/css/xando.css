@@ -1,0 +1,31 @@
+body{
+    background-image: url(../img/gameBackground.jpg);
+}
+#gameBoard {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-gap: 5px;
+    background-color: rgba(255, 255, 255, 0);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    background-color: rgba(122, 122, 122, 0.256);
+    font-size: 2em;
+    cursor: pointer;
+  }
+  .cell:hover {
+    background-color: rgba(146, 146, 146, 0.226);
+  }
+  #gameStatus {
+    margin:2px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+  }

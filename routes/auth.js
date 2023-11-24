@@ -7,9 +7,10 @@ const passport = require('passport')
 
 const User = require('../models/User')
 
-User.find({}).then((users)=>{
-  console.log(users)
-})
+// User.find({}).then((users)=>{
+//   console.log(users)
+// })
+
 router.get("/", async (req, res) => {
   try {
     res.render("auth/login", {
@@ -61,12 +62,14 @@ router.get("/signup", async (req, res) => {
 
 router.post("/signup", async (req, res, next) => {
   const { userName, phoneNumber,email, password } = req.body;
-try{
+  const hashedPassword = await bcrypt.hash(password, 10);
+  
+  try{
   const user = await registerUser(
     userName,
     email,
     phoneNumber,
-    password
+    hashedPassword
   );
 
   
@@ -79,13 +82,8 @@ try{
     console.log(`Username: ${userName}, Password: ${password}`);
     console.log(`Username: ${userName}, Password: ${user.password}`);
     
-    return res.render("auth/login", {
-      message: `<h3>🎉 Account Creation successful! 🎉</h3>
-    🚀 <h3>Play Smart, winners know when to stop.</h3>
-    <h3>We ensured your transactions are safe🔒, game play is secure and end-to-end-encrypted.<h3/>
-   `,
-      url: "/",
-      buttonText: "Home",
+    return res.render("pages/home", {
+      
       user,
       style: "home",
       script: "auth"
@@ -231,6 +229,7 @@ async function registerUser(
     const { privateKey, publicKey } = generateKeys();
     const hashedPrivateKey = await encryptPrivateKey(privateKey, password);
   console.log("privateKey "+ privateKey)
+  const seed = "randodm"+Math.random().toString()
   console.log("privateKey hashed"+ hashedPrivateKey)
     // Create a new user document with the hashed password
     const user = new User({
@@ -240,7 +239,7 @@ async function registerUser(
       password,
       emailVerified: false,
       verificationToken,
-      imageUrl:'https://api.dicebear.com/7.x/lorelei/svg?seed=Mr&hairflip=false',
+      imageUrl:`https://api.dicebear.com/7.x/adventurer/svg?seed=${seed}`,
       privateKey:hashedPrivateKey,
 publicKey
     });

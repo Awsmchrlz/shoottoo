@@ -6,9 +6,56 @@ socket.on("message", (data) => {
 
 socket.on("initialMessages", (messages) => {
   messages.forEach((message) => {
-    displayMessage(message);
+    setTimeout(()=>{
+
+      displayMessage(message);
+    },200) 
   });
 });
+
+socket.on("initialGames", (games) => {
+  games.forEach((game) => {
+    setTimeout(()=>{
+      displayGame(game);
+
+    },200) 
+  });
+});
+
+socket.on('newPublicGame', (game)=>{
+  displayGame(game)
+})
+
+
+
+
+function displayGame(game) {
+    const gamesContainer = document.getElementById("chatMessagesContainer");
+    const gameDiv = document.createElement("div");
+  gameDiv.classList.add('game-card');
+
+    gameDiv.innerHTML = `
+    
+    
+            <h2>${ game.roomName }</h2>
+            <p class="game-type">${ game.gameType }</p>
+            <p><strong>Players:</strong> ${ game.players.length }/${ game.maxPlayers }</p>
+            <p><strong>Stake Per Game:</strong> K${ game.stakePerGame }</p>
+            <p><strong>Private:</strong> ${ game.isPrivate ? 'Yes' : 'No' }</p>
+            <!-- Add more game details as needed -->
+            <form action="/game/joingame" method="post">
+                <input type="hidden" name="gameLink" value="${game.gameLink}">
+                <button class="join-button">Join Game</button>
+            </form>
+        
+  
+  `
+
+    gamesContainer.appendChild(gameDiv);
+    // Scroll to the bottom to show the latest games
+    gamesContainer.scrollTop = gamesContainer.scrollHeight;
+  }
+  
 const userId = document.getElementById("userId").value;
 
 function sendMessage() {
@@ -23,12 +70,21 @@ function sendMessage() {
 }
 
 
+setInterval(updateTimestamps, 3000); // Update every minute
+
+function updateTimestamps() {
+  const timestampElements = document.querySelectorAll('.timestamp');
+  timestampElements.forEach((element) => {
+    const timestamp = parseInt(element.dataset.timestamp, 10);
+    element.textContent = timeAgo(timestamp);
+  });
+}
+
 
 
 function displayMessage(data) {
   const isMe = data.userId === userId; // Assuming userId is a global variable representing your own user ID
   const areFriends = checkIfFriends(userId, data.userId);
-
  
   const messagesContainer = document.getElementById("chatMessagesContainer");
   const messageSpan = document.createElement("span");
@@ -56,7 +112,7 @@ function displayMessage(data) {
     <div class="message-body">
     <p>${data.message}</p>
   </div>
-  <div class="timestamp">${timeAgo(data.timeStamp)}</div>
+  <div class="timestamp" data-timestamp="${data.timeStamp}">${timeAgo(data.timeStamp)}</div>
 
   </div>
 </span>
@@ -148,4 +204,11 @@ randomizeRoomName.addEventListener('click',()=>{
 randomRoomName = generator.generateRoomName();
   roomName.innerHTML = randomRoomName;
 roomNameInput.value = randomRoomName;
+})
+
+const maximizeMessages = document.getElementById('maximizeContentBox')
+
+maximizeMessages.addEventListener('click',()=>{
+  console.log('dsd')
+  document.getElementById('chatMessagesContainer').classList.add('activeMessagesContainer')
 })

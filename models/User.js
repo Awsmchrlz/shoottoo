@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const crypto = require('crypto');
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const crypto = require("crypto");
 
 const userSchema = new mongoose.Schema({
   userName: {
@@ -14,11 +14,11 @@ const userSchema = new mongoose.Schema({
     trim: true,
     lowercase: true,
   },
-  emailVerified:{
-    type:Boolean,
-    default:false,
+  emailVerified: {
+    type: Boolean,
+    default: false,
   },
-  verificationToken:{
+  verificationToken: {
     type: String,
     required: true,
   },
@@ -28,11 +28,11 @@ const userSchema = new mongoose.Schema({
     unique: false,
     trim: true,
   },
-  friends:{
-    type:Array,
-    required:false
+  friends: {
+    type: Array,
+    required: false,
   },
-  imageUrl:{
+  imageUrl: {
     type: String,
     required: true,
   },
@@ -48,7 +48,7 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
+    required: false,
   },
   // Additional attributes can be added as needed
   // ...
@@ -70,24 +70,6 @@ const userSchema = new mongoose.Schema({
 });
 
 // Hash the password before saving to the database
-userSchema.pre('save', async function (next) {
-  const user = this;
-  if (user.isModified('password') || user.isNew) {
-    try {
-      const hashedPassword = await bcrypt.hash(user.password, 10);
-      user.password = hashedPassword;
-      const secretKey = 'yourSecretKey'; // Replace with a secure secret key
-user.updateAccountBalance(150, secretKey);
-
-      return next();
-    } catch (err) {
-      return next(err);
-    }
-  } else {
-    return next();
-  }
-});
-
 
 // Method to compare passwords during login
 userSchema.methods.comparePassword = async function (password) {
@@ -97,7 +79,6 @@ userSchema.methods.comparePassword = async function (password) {
     throw new Error(err);
   }
 };
-
 
 /// Method to set image url
 userSchema.methods.setImageUrl = async function (newImageUrl) {
@@ -112,19 +93,20 @@ userSchema.methods.setImageUrl = async function (newImageUrl) {
   }
 };
 
-
 // Method to update and sign account balance
-userSchema.methods.updateAccountBalance = async function (newBalance, secretKey) {
+userSchema.methods.updateAccountBalance = async function (
+  newBalance,
+  secretKey
+) {
   // Update account balance
   this.accountBalance = newBalance;
 
   // Create a hash of the account balance
-  const hash = crypto.createHash('sha256');
+  const hash = crypto.createHash("sha256");
   hash.update(`${this.accountBalance}${secretKey}`);
-  const signature = hash.digest('hex');
+  const signature = hash.digest("hex");
 
   // Verify the signature before saving
-
 
   // Save the signature to the user's document
   this.accountBalanceSignature = signature;
@@ -136,13 +118,13 @@ userSchema.methods.updateAccountBalance = async function (newBalance, secretKey)
 // Method to verify account balance integrity
 userSchema.methods.verifyAccountBalance = function (secretKey) {
   // Recreate the hash and compare with the stored signature
-  const hash = crypto.createHash('sha256');
+  const hash = crypto.createHash("sha256");
   hash.update(`${this.accountBalance}${secretKey}`);
-  const recalculatedSignature = hash.digest('hex');
+  const recalculatedSignature = hash.digest("hex");
 
   return this.accountBalanceSignature === recalculatedSignature;
 };
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;

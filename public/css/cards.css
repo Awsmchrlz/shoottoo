@@ -1,5 +1,99 @@
+
+
 body{
     background-image: url(../img/gameBackground.jpg);
 }
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+  html, body {
 
+  }
+  body {
+    -webkit-perspective: 1000px;
+    -ms-perspective: 1000px;
+    perspective: 1000px;
+  }
+  article {
+    position: absolute;
+    z-index: 2;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    -webkit-transform-style: preserve-3d;
+    -ms-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-transition: transform 1s;
+    transition: transform 1s;
+    -ms-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+    color: transparent;
+    background: red;
+    border-radius: 7px;
+    box-shadow: inset darkred 0 0 50px, rgba(0,0,0,1) 0 0 1px, rgba(0,0,0,.05) 0 10px 15px;
+    border: 7px solid white;
+    margin: 0;
+    padding: 0;
+    width: 105px;
+    height: 155px;
+    bottom: 10px;
+  }
+  article h2 {
+    display: none;
+    margin: .75em 0;
+    font-size: 45pt;
+    line-height: 1.2;
+    text-align: center;
+    pointer-events: none;
+  }
+  small {
+    margin: 0;
+    font-size: 14pt;
+    line-height: 1;
+    text-align: center;
+    pointer-events: none;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+  }
+  article input {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: auto;
+    opacity: 0;
+    transition: opacity .2s ease-in-out;
+  }
+  article:hover input {
+    opacity: 1;
+  }
+  [data-flip=flipped] {
+    color: black;
+    background: white;
+    -ms-transform: rotateY(0deg);
+    -ms-transform: rotateY(0deg);
+    transform: rotateY(0deg);
+    border: 1px solid rgba(0,0,0,.1);
+    box-shadow: inset #eee 0 0 30px, rgba(0,0,0,.5) 0 0 1px, rgba(0,0,0,.05) 0 10px 15px;
+  }
+  [data-flip=flipped] input {
+    top: 1px;
+    right: 1px;
+    left: auto;
+  }
+  [data-flip=flipped][data-suit=♥],
+  [data-flip=flipped][data-suit=♦] {
+    color: red;
+  }
 
+  #gameScreen{
+    flex: 1;
+    background-color: red;
+  }
+  #deckContainer{
+
+  }

@@ -1,10 +1,12 @@
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/User');
+const Game = require('../models/Game')
 const bcrypt = require('bcrypt');
 
-// User.deleteMany({}).then((done)=>{
+// Game.deleteMany({}).then((done)=>{
 //   console.log(done)
 // })
+
 
 module.exports = function (passport) {
   passport.use(

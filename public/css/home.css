@@ -44,8 +44,10 @@ flex-direction: column;
     align-items: center;
     justify-content: center;
 position: relative;
+z-index: 2;
 
 }
+
 section div{
     width: 70%;
     max-width: 340px;
@@ -62,7 +64,7 @@ section div{
     text-transform: uppercase;
     border-radius: 8px;
     background: #34db71;
-    border: 2px solid #5cc2c9;
+    border: 2px solid var(--bluey);
     box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
     position: relative;
     overflow: hidden;
@@ -106,17 +108,10 @@ section div{
 .bottomSection{
     height:  fit-content;
     width: 85%;
-    position: absolute;
-    bottom: 10px;
+    position: relative;
+    margin-bottom: 6px;
 }
 
-.chatMessagesContainer{
-
-   
-    overflow-y: auto;
-    min-height: fit-content;
-    max-height: 300px;
-}
 
  
 .sendSection input, .sendSection button{
@@ -247,3 +242,12 @@ background-color: #ddd;
     font-size: 20px;
     color: var(--textColor);
   }
+
+  .sendSection{
+    height: fit-content;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  

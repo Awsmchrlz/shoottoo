@@ -1,13 +1,13 @@
 nav{
     flex-direction: row;
-padding: 15px;
+padding: 12px;
 max-width: 600px;
 background-color: rgba(0, 0, 0, 0.615);
 }
 
 nav .userIcon{
- width: 100px;
- height: 100px;
+ width: 85px;
+ height: 85px;
 border: 1px solid gainsboro;
  box-shadow: inset 0px 0px 4px 2px black;
  border-radius: 4px;
@@ -32,19 +32,26 @@ nav .userIcon img{
 
 h3{
   font-family: 'Agbalumo', sans-serif;
-  font-size: 60px;
+  font-size:55px;
   text-transform: uppercase;
   text-align: center;
+  margin: 0;
+  padding: 0;
+  height: fit-content;
+}
+h2{
+  margin: 0;
 }
 
 .gameDetails {
-  margin-top: 5px;
-  padding: 20px;
-  padding-bottom: 0px;
+  margin-top: 2px;
+  padding: 5px 0px;
+  height: fit-content;
   border-radius: 5px;
   background-color: #0000008e;
   width: 90%;
 }
+
 
 .gameDetails p{
   margin: 0;
@@ -57,23 +64,17 @@ h3{
   font-size: 22px;
 
 }
-.players-section{
-  width: 90%;
-}
-
-.sendSection{
-  position: fixed;
-  bottom: 4px;
-}
 
 
 .sendSection{
-  height: fit-content;
-  margin-top: 10px;
+
+  
+  
   display: flex;
   align-items: center;
   justify-content: center;
   width: 90%;
+  margin-bottom: 10px;
 }
 
 input{
@@ -93,12 +94,12 @@ input{
 
 
  button{
-  min-width: 100px;
+
   width: fit-content;
   height: 100%;
   max-width: 180px;
-padding: 6px;
-  font-size: 30px;
+padding: 3px;
+  font-size: 20px;
 font-weight: 600;
 color: #333333;
 background-color: #75f779;
@@ -131,4 +132,113 @@ h4{
 #copyGameLink{
   font-size: 26px;
   padding: 5px;
+}
+
+
+#gameMessages{
+  width: 120px;
+position: absolute;
+overflow-y: auto;
+max-height:80px;
+right: -10px;
+bottom: -75px;
+}
+
+#gameMessages div{
+  width: 100%;
+}
+#gameMessages p{
+  background-color: transparent;
+  width: 100%;
+  max-width: 100%;
+  overflow-wrap: break-word;
+
+}
+.gameContainer{
+  width: 90%;
+  flex: 1;
+z-index: 4;
+padding: 0;
+margin-bottom: 4px;
+position: relative;
+}
+
+#gamesContainer{
+
+}
+
+#gamePlayers img{
+  width: 40px;
+  height: auto;
+}
+
+.players-section{
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-direction: row;
+}
+
+.players-section div{
+  
+}
+
+
+@media (max-height:670px) {
+  h3{
+    font-size: 30px;
+    margin: 2px 2px;
+  }
+  .gameDetails h2{
+    font-size: 20px;
+    margin: 2px 2px;
+    padding: 0px;
+  }
+  .gameDetails{
+    height: fit-content;
+  
+  }
+  .gameDetails p{
+    padding: 0;
+    margin: 0;
+    font-size: smaller;
+  }
+
+  #gamePlayers{
+    height: fit-content;
+    display: flex;
+    z-index: 1;
+  }
+  #gamePlayers div, #gamePlayers span{
+    font-size: 12px;
+    height: fit-content;
+    margin: 0;
+    padding: 0;
+  }
+  #gamePlayers img{
+    width: 30px;
+  }
+  
+}
+
+p strong{
+  color: rgb(255, 255, 255);
+}
+
+.modal h2{
+  font-family: inherit;
+}
+h2 span.win{
+  color: var(--primary);
+  font-size: 40px;
+}
+h2 span.loss{
+  color: red;
+  font-size: 30px;
+}
+h2 span.stake{
+color: #0c8410;
+font-size: 30px;
 }

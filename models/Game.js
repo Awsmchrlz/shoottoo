@@ -8,7 +8,7 @@ const gameSchema = new mongoose.Schema({
     required: true,
   },
   players: {
-    type: [String], // Assuming player IDs are stored as strings
+    type: [Object], // Assuming player IDs are stored as strings
     required: true,
     default:[]
   },
@@ -24,9 +24,6 @@ const gameSchema = new mongoose.Schema({
   roomName: {
     type: String,
     required: true,
-  },
-  password: {
-    type: String,
   },
   isPrivate: {
     type: Boolean,
@@ -46,6 +43,10 @@ const gameSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now,
+  },
+  timeStamp:{
+    type:String,
+    default:'' 
   },
   updatedAt: {
     type: Date,
@@ -93,7 +94,20 @@ gameSchema.methods.updateGame = async function (updateData) {
     throw new Error(error.message);
   }
 };
-
+gameSchema.methods.playerJoin = async function ({userName, imageUrl, userId,symbol}) {
+  try {
+ if(!this.players.includes({userName, imageUrl, userId, symbol})){
+  this.players.push({userName, imageUrl, userId, symbol})
+  this.updatedAt = Date.now();
+  await this.save();
+  return this;
+}else{
+  return this;
+}
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
 // Instance method to remove a game
 gameSchema.methods.removeGame = async function () {
   try {
