@@ -93,46 +93,9 @@ io.on("connection", (socket) => {
     io.emit("message", message); // Broadcast the message to all connected clients
   });
 
-  socket.on("gameMessage", (data) => {
-    console.log(data);
-    io.emit("gameMessage", data);
-  });
+ 
+ 
 
-  socket.on("getPlayers", async (data) => {
-    const gameId = data.gameId;
-    // const game = Game.findOne({gameLink:gameLink})
-  });
-
-  socket.on("joinGame", ({ userName, userId, gameId, imageUrl }) => {
-    // if (game.players.length < 2) {
-    Game.findOne({ _id: gameId }).then((game) => {
-      if(game){
-      let flag = false;
-        game.players.forEach((player) => {
-          if (userId == player.userId) {
-            flag = true;
-          }
-        });
-        if (!flag) {
-          game.playerJoin({
-            userName,
-          imageUrl,
-          userId,
-          symbol: game.players.length == 0 ? "X" : "O",
-        });
-      }
-      console.log("game found", game);
-      io.emit("gameDetails", { players: game.players });
-    }
-    });
-    // }
-  });
-
-  socket.on("makeMove", ({ index, userId, symbol }) => {
-    console.log(index);
-
-    io.emit("updateBoard", { index, userId, symbol });
-  });
 });
 
 

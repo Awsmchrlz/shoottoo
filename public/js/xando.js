@@ -2,7 +2,7 @@
 
 
 // Game class
-class Game {
+class XOGAME {
   constructor() {
     this.board = Array(9).fill(null); // Represents the Tic Tac Toe board
     this.players = []; // Array to store player information
@@ -62,28 +62,28 @@ class Player {
 
 // Client-side logic (Assuming usage in a browser environment)
 const socket2 = io.connect();
-let game = null;
+var XOGame = null;
 
 const id = document.getElementById("userIdInput").value;
 const name = document.getElementById("userNameInput").value;
 const imageUrl = document.getElementById("imageUrlInput").value;
 let mySymbol
 const gameId = document.getElementById("gameIdInput").value;
-
+const gameLink = document.getElementById("gameLinkInput").value;
 socket2.on("connect", () => {
   console.log("Connected to server");
-  socket2.emit("joinGame", {userId:id,userName:name, imageUrl, gameId});
+  socket2.emit("joinXandOGame", {userId:id,userName:name, imageUrl, gameLink, gameId});
 });
 
 // JavaScript for client-side logic
 // Function to handle game events on the client side
 socket2.on("gameDetails", ({players}) => {
     let playersString = ''
-  if(!game){
-    game = new Game();
+  if(!XOGame){
+    XOGame = new XOGAME();
   }
-  initializeBoard(game.board);
-  game.players = players
+  initializeBoard(XOGame.board);
+  XOGame.players = players
   players.forEach((player, index)=>{
     if(player.userId == id){
         mySymbol = player.symbol
@@ -108,8 +108,8 @@ socket2.on("gameDetails", ({players}) => {
 });
 
 socket2.on("updateBoard", ({ userId, symbol,index}) => {
-    game.makeMove(index, userId)
-  updateBoard(game.board);
+    XOGame.makeMove(index, userId)
+  updateBoard(XOGame.board);
 
 });
 
@@ -141,7 +141,7 @@ function updateBoard(board) {
 function handleMove(index) {
   const player = "X"; // Replace with actual player identification
   const encryptedMove = encryptMove(index, player);
-  socket2.emit("makeMove", {userId, index, symbol:mySymbol});
+  socket2.emit("XandOMove", {userId, index, symbol:mySymbol, gameLink});
 }
 
 // Functions to encrypt and decrypt moves

@@ -1,8 +1,5 @@
 "use strict";
 console.clear();
-
-const chessSocket = io.connect();
-
 let PIECE_DIR_CALC = 0;
 class Utils {
     static colToInt(col) {
@@ -693,9 +690,7 @@ class Board {
         const pD = positionsDefaults.join(",");
         return pA.length > pD.length ? `X${pD}` : pA;
     }
-
 }
-
 Board.COLS = ["A", "B", "C", "D", "E", "F", "G", "H"];
 Board.ROWS = ["1", "2", "3", "4", "5", "6", "7", "8"];
 class Game {
@@ -706,9 +701,7 @@ class Game {
         this.moves = [];
         this.turn = turn;
         this.board = new Board(pieces, piecePositions);
-        this.sendFlag = true
     }
-
     activate(location) {
         const tilePiece = this.board.tileFind(location);
         if (tilePiece && !this.active && tilePiece.data.player !== this.turn) {
@@ -790,48 +783,8 @@ class Game {
         }
         return `${location.col === "C" ? "A" : "H"}${location.row}`;
     }
-
-
-    
-
-    
-    
-    move(pieceId, location, capture = false) 
-    {
-        // console.log(pieceId, location)
-    
-            chessSocket.emit('ChessMove', { pieceId, location, capture,   gameLink:document.getElementById('gameLinkInput').value ,senderId:socket3.id});
-            this.sendFlag = false
-        
-
-        const piece = this.board.pieces[pieceId];
-        const castledId = this.handleCastling(piece, location);
-        piece.move(this.moveIndex);
-        if (castledId) {
-            const castled = this.board.pieces[castledId];
-            castled.move(this.moveIndex);
-            this.board.pieceMove(castled, { col: location.col === "C" ? "D" : "F", row: location.row });
-            this.moves.push(`${pieceId}O${location.col}${location.row}`);
-        }
-        else {
-            this.moves.push(`${pieceId}${capture ? "x" : ""}${location.col}${location.row}`);
-        }
-        this.moveIndex++;
-        this.board.pieceMove(piece, location);
-        // this.turn = this.turn === "WHITE" ? "BLACK" : "WHITE";
-        this.board.piecesUpdate(this.moveIndex);
-        const state = this.moveResultState();
-        console.log(state);
-        if (!state.moves && !state.captures) {
-            alert(state.stalemate ? "Stalemate!" : `${this.turn === "WHITE" ? "Black" : "White"} Wins!`);
-        }
-
-        return castledId;
-    }
-
-    recieveMove(pieceId, location, capture = false) 
-    {
-      
+    move(pieceId, location, capture = false) {
+        console.log(pieceId ,location, capture)
         const piece = this.board.pieces[pieceId];
         const castledId = this.handleCastling(piece, location);
         piece.move(this.moveIndex);
@@ -853,7 +806,6 @@ class Game {
         if (!state.moves && !state.captures) {
             alert(state.stalemate ? "Stalemate!" : `${this.turn === "WHITE" ? "Black" : "White"} Wins!`);
         }
-
         return castledId;
     }
     moveResultState() {
@@ -992,7 +944,6 @@ class View {
         document.querySelectorAll(".highlight-move").forEach((element) => element.classList.remove("highlight-move"));
     }
     handleTileClick(location) {
-        
         const { activePieceId, capturedPieceId, moves = [], captures = [], type } = this.game.activate(location);
         this.drawResetClassNames();
         if (type === "TOUCH") {
@@ -1021,6 +972,7 @@ class View {
         // this.setPerspective(this.game.turn);
     }
     setPerspective(perspective) {
+        console.log(perspective)
         const other = perspective === "WHITE" ? "perspective-black" : "perspective-white";
         const current = perspective === "WHITE" ? "perspective-white" : "perspective-black";
         this.element.classList.add(current);
@@ -1057,7 +1009,6 @@ class Control {
             return 1000;
         }
     }
-
     autoplay() {
         const input = this.game.turn === "WHITE" ? this.inputRandomWhite : this.inputRandomBlack;
         if (!input.checked) {
@@ -1068,7 +1019,6 @@ class Control {
         this.view.handleTileClick(position);
         setTimeout(this.autoplay.bind(this), this.speed);
     }
-
     updateViewPerspective() {
         this.view.setPerspective(this.inputPerspectiveBlack.checked ? "BLACK" : "WHITE");
     }
@@ -1085,6 +1035,9 @@ const DEMOS = {
 };
 const initialPositions = Utils.getInitialPiecePositions();
 // const initialPositions = Utils.getPositionsFromShortCode(DEMOS.castle1);
-
-// const control = new Control(game, view);
-// control.autoplay();
+const initialTurn = "WHITE";
+const perspective = "WHITE";
+const game = new Game(Utils.getInitialPieces(), initialPositions, initialTurn);
+const view = new View(document.getElementById("board"), game, perspective);
+const control = new Control(game, view);
+control.autoplay();

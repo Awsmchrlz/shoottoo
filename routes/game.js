@@ -131,10 +131,93 @@ function generateUniqueGameLink(roomName) {
   io.on("connection", async(socket) => {
 
   
+    //game message  
+  socket.on("GameMessage", (data) => {
+    console.log('fadada', data.gameLink)
+    socket.join(data.gameLink);
+    io.to(data.gameLink).emit("GameMessage", data);
+  });
+  socket.on("JoinSocket", (data) => {
+    socket.join(data.gameLink);
+  
+  });
+
     // Emit initial messages to the newly connected client
     socket.emit("initialGames", getLatestGames());
 
-   
+    socket.on("XandOMove", ({ index, userId, symbol, gameLink }) => {
+      socket.join(gameLink);
+      io.to(gameLink).emit("updateBoard", { index, userId, symbol });
+    });
+
+    socket.on("ChessMove", ({ pieceId, location, capture, gameLink, senderId }) => {
+
+      if (senderId !== socket.id) {
+          socket.join(gameLink);
+          socket.to(gameLink).emit("updateChessBoard", { pieceId, location, capture, senderId: socket.id, });
+      }
+
+  });
+
+    socket.on("joinXandOGame", ({ userName, userId, gameLink,gameId, imageUrl }) => {
+      // if (game.players.length < 2) {
+      Game.findOne({ _id: gameId, gameType:'xando' }).then((game) => {
+        if(game){
+        
+          socket.join(gameLink);
+  
+        let flag = false;
+          game.players.forEach((player) => {
+            if (userId == player.userId) {
+              flag = true;
+            }
+          });
+          if (!flag) {
+            game.playerJoin({
+              userName,
+            imageUrl,
+            userId,
+            symbol: game.players.length == 0 ? "X" : "O",
+          });
+        }
+        console.log("game found", game);
+        io.to(gameLink).emit("gameDetails", { players: game.players });
+      }
+      });
+      // }
+    });
+  
+
+    socket.on("joinChessGame", ({ userName, userId, gameLink,gameId, imageUrl }) => {
+      // if (game.players.length < 2) {
+      Game.findOne({ _id: gameId, gameType:'chess' }).then((game) => {
+        if(game){
+          console.log('game likk',gameLink)
+          socket.join(gameLink);
+  
+        let flag = false;
+          game.players.forEach((player) => {
+            if (userId == player.userId) {
+              flag = true;
+            }
+          });
+          if (!flag) {
+            game.playerJoin({
+              userName,
+            imageUrl,
+            userId,
+            symbol: game.players.length == 0 ? "WHITE" : "BLACK",
+          });
+        }
+        console.log("game found", game);
+        io.to(gameLink).emit("gameDetails", { players: game.players });
+      }
+      });
+      // }
+    });
+  
+
+
   });  
 
 

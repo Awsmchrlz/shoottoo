@@ -27,8 +27,6 @@ socket.on('newPublicGame', (game)=>{
 })
 
 
-
-
 function displayGame(game) {
     const gamesContainer = document.getElementById("chatMessagesContainer");
     const gameDiv = document.createElement("div");
@@ -210,5 +208,26 @@ const maximizeMessages = document.getElementById('maximizeContentBox')
 
 maximizeMessages.addEventListener('click',()=>{
   console.log('dsd')
-  document.getElementById('chatMessagesContainer').classList.add('activeMessagesContainer')
+  document.querySelector('.chatMessagesContainer').classList.add('reversing')
+  document.querySelector('.chatMessagesContainer').classList.add('is-expanded')
+  
+  
+
+  
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
