@@ -1,3 +1,8 @@
+
+
+
+const checkersSocket = io.connect();
+
 class Checkers {
     constructor() {
         this.moveCounter = 0;
@@ -223,9 +228,11 @@ class Checkers {
   }
   
   async movePiece(targetSquare) {
-    const newIndex = this.getSquareIndex(targetSquare);
-    const oldIndex = this.getSquareIndex(this.selectedPiece.parentElement);
-    const jumpedIndex = this.getJumpedIndex(oldIndex, newIndex);
+      console.log('logging target',targetSquare)
+      const newIndex = this.getSquareIndex(targetSquare);
+      const oldIndex = this.getSquareIndex(this.selectedPiece.parentElement);
+      const jumpedIndex = this.getJumpedIndex(oldIndex, newIndex);
+ 
   
     const isJump = Math.abs(newIndex - oldIndex) === 18 || Math.abs(newIndex - oldIndex) === 14;
   
@@ -242,22 +249,29 @@ class Checkers {
   
     return isJump;
   }
-  
   checkKingStatus(piece, squareIndex) {
     if (this.shouldBecomeKing(piece, squareIndex)) {
       this.makeKing(piece);
     }
   }
+
   
   //player turn logic
   async handleClick(square) {
     const piece = square.firstChild;
     if (piece && this.isPieceSelectable(piece)) {
+        
       this.selectPiece(piece);
       this.showPossibleMoves(this.getPossibleMoves(piece));
     } else if (this.possibleMoves.includes(square)) {
       const isJump = await this.movePiece(square);
       if ((!isJump || !this.canJumpAgain(this.selectedPiece)) && !this.isGameOver()) {
+        checkersSocket.emit('CheckersMove', {
+            from: this.getSquareIndex(this.selectedPiece.parentElement),
+            to: this.getSquareIndex(square),
+            currentPlayer: this.currentPlayer,
+            // Add any other necessary data
+        });
         await this.switchTurn();
       } else if (this.canJumpAgain(this.selectedPiece)) {
         this.hidePossibleMoves(this.possibleMoves);
@@ -265,9 +279,46 @@ class Checkers {
         this.showPossibleMoves(this.possibleMoves);
       }
     }
+
+  
   }
-  
-  
+
+  async handleOpponentMove(moveData) {
+    // const { from, to, currentPlayer } = moveData;
+
+    // const fromSquare = this.squares[from];
+    // const toSquare = this.squares[to];
+    // const pieceToMove = fromSquare.firstChild;
+
+    // // Perform the move on the game board (update UI)
+    // toSquare.appendChild(pieceToMove);
+    // fromSquare.removeChild(pieceToMove);
+
+    // // Check if the move involves a capture
+    // const jumpedIndex = this.getJumpedIndex(from, to);
+    // if (jumpedIndex !== null) {
+    //     const jumpedSquare = this.squares[jumpedIndex];
+    //     jumpedSquare.removeChild(jumpedSquare.firstChild);
+    //     this.piecesCaptured[currentPlayer]++;
+    //     this.updateScoreboard();
+    // }
+
+    // // Check if the moved piece should become a king
+    // this.checkKingStatus(pieceToMove, to);
+
+    // // Switch the current player if it's different from the local player
+    // if (currentPlayer !== this.currentPlayer) {
+    //     this.currentPlayer = currentPlayer;
+    //     this.updateScoreboard(); // Update UI indicating the current player
+    // }
+
+    // // Check if the game is over
+    // if (this.isGameOver()) {
+    //     console.log('Game Over! Winner:', this.currentPlayer === this.player1 ? this.player2 : this.player1);
+    //     // Handle game over logic (e.g., show a message, reset the board)
+    // }
+}
+
   currentPlayerPieces() {
     return this.squares
       .filter(square => square.firstChild && square.firstChild.classList.contains(this.currentPlayer))
@@ -377,10 +428,3 @@ class Checkers {
           
   }
   
-  document.addEventListener('DOMContentLoaded', () => {
-    const checkersGame = new Checkers();
-  
-    for (const square of checkersGame.squares) {
-      square.addEventListener('click', () => checkersGame.handleClick(square));
-    }
-  });

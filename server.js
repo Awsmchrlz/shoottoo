@@ -17,6 +17,7 @@ const io = require("socket.io")(http); // Integrate Socket.IO with the server
 
 //route definition
 const homeRouter = require("./routes/home");
+const openGamesRouter = require("./routes/opengames");
 const authRouter = require("./routes/auth");
 const transactionsRouter = require("./routes/transactions");
 const gameRouter = require("./routes/game")(io); // Passing the io instance to gameRoutes
@@ -122,7 +123,8 @@ function getCurrentTimestamp() {
 app.use("/auth", authRouter);
 app.use("/", ensureAuthenticated, homeRouter);
 app.use("/game", gameRouter);
-app.use("/transactions", transactionsRouter);
+app.use("/transaction", transactionsRouter);
+app.use("/opengames", openGamesRouter);
 
 
 http.listen(process.env.PORT || 3000, () => console.log(`Listening on port `));

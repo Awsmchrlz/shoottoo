@@ -52,6 +52,10 @@ const gameSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  gameLog:{
+    type:Array,
+    default:[]
+  }
 });
 
 // Static method to create a new game

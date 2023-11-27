@@ -23,7 +23,7 @@ function buildDeck(){
     paper.setAttribute('data-suit',shuffle[pick][0])
     paper.setAttribute('data-card',shuffle[pick][1])
     shuffle.splice(pick,1)
-    paper.style.top = y+'px'
+    paper.style.top ='200px'
     paper.style.left = x+'px'
     document.body.appendChild(paper)
     paper.addEventListener('mousedown',click)

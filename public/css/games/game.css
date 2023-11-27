@@ -11,7 +11,7 @@ nav .userIcon{
 border: 1px solid gainsboro;
  box-shadow: inset 0px 0px 4px 2px black;
  border-radius: 4px;
- background-image: url('../icon/profilePan.png');
+ background-image: url('../../icon/profilePan.png');
  background-repeat: no-repeat;
  background-position: center;
  background-size: contain;
@@ -137,11 +137,11 @@ h4{
 
 #gameMessages{
   width: 120px;
-position: absolute;
+position: fixed;
 overflow-y: auto;
 max-height:80px;
-right: -10px;
-bottom: -75px;
+right: 10px;
+top: 30%;
 }
 
 #gameMessages div{
