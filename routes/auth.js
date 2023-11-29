@@ -4,6 +4,9 @@ const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const cryptojs = require('crypto-js');
 const passport = require('passport')
+require("dotenv").config();
+
+
 
 const User = require('../models/User')
 
@@ -88,6 +91,8 @@ router.post("/signup", async (req, res, next) => {
     phoneNumber,
     hashedPassword
   );
+
+  user.updateAccountBalance(10, process.env.MoneyKey)
 
   
   req.login(user, async (err) => {

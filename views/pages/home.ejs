@@ -155,36 +155,44 @@
   <div class="footer"></div>
 </div>
 
-<div class="modal" id="transact">
+<div class="modal active" id="transact">
   <div class="header">
     <span>Transact</span>
     <span class="closeModal" id="transact">&times;</span>
   </div>
   <div class="body center column">
-    <div class="tabs-container">
+    <div class="tabs-container custom-scrollbar">
       <div class="tab deposit-tab center active" onclick="showTab('deposit')">
         Deposit
       </div>
       <div class="tab withdraw-tab center" onclick="showTab('withdraw')">
         Withdraw
       </div>
+      <div class="tab transactions-tab center" onclick="showTab('transactions')">
+        Transactions
+      </div>
     </div>
 
     <div class="tab-content column deposit-content active">
       <div>Deposit 100K request from Account - <%=user.phoneNumber%></div>
-      <form action="" class="center column" method="post">
+      <form action="/transaction/deposit" class="center column" method="post">
         <input
           type="text"
           class=""
-          name="withdrawAmount"
+          name="amount"
           placeholder="Enter Amount"
           id=""
         />
+        <input type="hidden" name="phoneNumber"  value="<%=user.phoneNumber%>">
+        <input type="hidden" name="userId" value="<%=user._id%>">
         <br />
-        <button type="submit">Withdraw</button>
+        <button type="submit">Deposit</button>
       </form>
     </div>
-
+    <div class="tab-content column transactions-content">
+ <%=user.transactions%>
+    </div>
+  
     <div class="tab-content withdraw-content">
       <div>Withdraw 100K from account - <%=user.phoneNumber%></div>
       <form action="" class="center column" method="post">
@@ -196,7 +204,7 @@
           id=""
         />
         <br />
-        <button type="submit">Deposit</button>
+        <button type="submit">Withdraw</button>
       </form>
     </div>
   </div>

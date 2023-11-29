@@ -69,9 +69,9 @@ const userSchema = new mongoose.Schema({
   },
   transactions: [
     {
-      type: {
+      transactionType: {
         type: String, // 'DEPOSIT' or 'WITHDRAWAL'
-        enum: ["DEPOSIT", "WITHDRAWAL"],
+        enum: ["DEPOSIT", "WITHDRAWAL","GAME-ENTRY", "TRANSFER", "RECIEVE"],
         required: true,
       },
       amount: {
@@ -82,6 +82,10 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
       },
+      transactionId:{
+        type:String,
+        required:true
+      }
     },
   ],
 });
@@ -157,13 +161,15 @@ userSchema.methods.verifyAccountBalance = function (secretKey) {
 };
 
 
-userSchema.methods.verifyTransactionSignature = function () {
-  const hash = crypto.createHash("sha256");
-  hash.update(`${this.transactions}${this.pin}`);
-  const recalculatedSignature = hash.digest("hex");
-  return this.transactionSignature === recalculatedSignature;
-};
 
+
+userSchema.methods.pushTransaction = function ({type, amount, timestamp, signature,transactionId}) {
+  this.transactions.push({
+    type, amount, signature,transactionId,
+    timestamp: Date.now(),
+    // Additional transaction details...
+  });
+}
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);
 

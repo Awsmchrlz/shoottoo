@@ -24,6 +24,7 @@ const gameRouter = require("./routes/game")(io); // Passing the io instance to g
 
 const Game = require("./models/Game");
 const User = require("./models/User");
+const Transaction = require("./models/Transaction");
 
 // Game.deleteMany({}).then((done)=>{
 //   console.log(done)
@@ -33,6 +34,9 @@ const User = require("./models/User");
 //   console.log(done)
 // })
 
+// Transaction.deleteMany({}).then((done)=>{
+//   console.log(done)
+// })
 
 const { ensureAuthenticated } = require("./config/auth");
 
