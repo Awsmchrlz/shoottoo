@@ -253,7 +253,7 @@ scroll-behavior: smooth;
   .tabs-container {
     display: flex;
     overflow: hidden;
-    overflow-x: auto;
+    overflow-x: scroll;
     width: 300px;
     max-width: 305px;
     border: 1px solid #ccc;
@@ -345,9 +345,13 @@ scroll-behavior: smooth;
 .tab{
 
   min-height: 80px;
+  max-height: 80px;
+  min-width: 70px;
+  max-width: 70px;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
+  margin: 10px;
 }
 
 .chess{
@@ -363,7 +367,9 @@ scroll-behavior: smooth;
   background-image: url('../icon/cards.png');
 }
 
-
+.lunarlabyrinth{
+  background-image: url('../icon/cards.png');
+}
 
 
 
@@ -454,15 +460,48 @@ color: #333333;
   
 }
 
+@keyframes bounce {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
 
+  5% {
+    transform: translate(90%, -10%);
+  }
+  15% {
+    transform: translate(-70%, -200%);
+  }
 
-
-.workingOnitGif {
-  position: fixed;
-  top: 13%;
-  right: 4px;
+   30% {
+    transform: translate(-80%, 70%);
+  } 
+  40% {
+    transform: translate(-10%, 40%);
+  } 
+  47% {
+    transform: translate(-10%, 70%);
+  } 
+  56% {
+    transform: translate(130%, 190%);
+  } 
+  60% {
+    transform: translate(-120%, 70%);
+  } 
+  65% {
+    transform: translate(100%, 30%);
+  }
+  79% {
+    transform: translate(100%, 190%);
+  }
+  87% {
+    transform: translate(-100%, 100%);
+  } 
+  92% {
+    transform: translate(-10%, 70%);
+  } 
+  95% {
+    transform: translate(-10%, 70%);
+  } 
 }
-.workingOnitGif img{
-  width: 150px;
-  
-}
+
+

@@ -1,0 +1,310 @@
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css?family=Open+Sans");
+*,
+*:after,
+*:before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
+}
+
+
+body p {
+  padding: 25px;
+  margin: 15px auto;
+  max-width: 600px;
+  margin-bottom: 25px;
+}
+body .end {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  background-color: #66A56B;
+  color: white;
+  padding: 25px;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+body .end a {
+  text-decoration: none;
+  background-color: white;
+  color: #973A37;
+  padding: 5px 10px;
+  text-transform: uppercase;
+}
+
+.mobilecontrols {
+  display: none;
+}
+@media (max-width : 550px) {
+  .mobilecontrols {
+    display: block;
+    width: 100%;
+    position: fixed;
+    bottom: 25px;
+    left: 0;
+    right: 0;
+  }
+  .mobilecontrols #up, .mobilecontrols #down, .mobilecontrols #left, .mobilecontrols #right {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.4);
+    color: #ffffff;
+    border-radius: 50%;
+    line-height: 1;
+    font-size: 1.5rem;
+    text-decoration: none;
+    text-align: center;
+    display: flex;
+    width: 50px;
+    height: 50px;
+    padding: 10px;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .mobilecontrols #up {
+    bottom: 75px;
+    left: 25px;
+  }
+  .mobilecontrols #down {
+    right: 25px;
+    bottom: 75px;
+  }
+  .mobilecontrols #right {
+    bottom: 25px;
+    right: 50px;
+  }
+  .mobilecontrols #left {
+    bottom: 25px;
+    left: 50px;
+  }
+}
+
+.maze-container {
+  position: relative;
+  width: 600px;
+  margin: 0 auto;
+}
+@media (max-width : 550px) {
+  .maze-container {
+    width: 280px;
+    margin: 0 auto;
+  }
+}
+
+#skyzinha {
+  background-color: #2c68a5;
+  width: 30px;
+  height: 20px;
+  left: 0px;
+  top: 0px;
+  border-radius: 60%;
+  position: absolute;
+  z-index: 10;
+  transition: all 0.3s ease-in-out;
+  transform: translate(-50%, -50%);
+}
+@media (max-width : 550px) {
+  #skyzinha {
+    left: 7px;
+    top: 7px;
+    width: 15px;
+    height: 15px;
+  }
+}
+#skyzinha:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 9;
+  border-radius: 60%;
+  background-image: radial-gradient(circle at center right, #76a8da, #2c68a5, #1c4269, #3a81ca, #2c68a5);
+}
+#skyzinha .tail {
+  -webkit-clip-path: polygon(4% 0, 100% 11%, 100% 84%, 0 97%);
+          clip-path: polygon(4% 0, 100% 11%, 100% 84%, 0 97%);
+  background: #2c68a5;
+  background: linear-gradient(to bottom, #3175b9 0%, #2c68a5 8%, #214f7d 22%, #3a81ca 50%, #214f7d 71%, #2c68a5 89%, #629bd5 100%);
+  position: absolute;
+  left: -20%;
+  top: 50%;
+  transform: translatey(-50%);
+  width: 30%;
+  height: 50%;
+  z-index: 10;
+}
+#skyzinha .beak {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 5px 0 5px 12.5px;
+  border-color: transparent transparent transparent #b65f36;
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  transform: translatey(-50%);
+  z-index: 10;
+}
+#skyzinha .eye {
+  border: solid 1px #b3b3b3;
+  position: absolute;
+  background-color: #ffffff;
+  border-radius: 100%;
+  width: 7.5px;
+  height: 5px;
+  right: 1px;
+  top: 2.5px;
+  overflow: hidden;
+  z-index: 10;
+}
+#skyzinha .eye:after {
+  content: "";
+  background-color: #000000;
+  position: absolute;
+  top: 25%;
+  right: 0%;
+  width: 60%;
+  height: 70%;
+  border-radius: 70%;
+}
+#skyzinha .eye.right {
+  top: unset;
+  bottom: 5px;
+}
+#skyzinha .pawn {
+  position: absolute;
+  width: 10px;
+  height: 2px;
+  background-color: #67361f;
+  z-index: 1;
+  right: -5px;
+  top: 15%;
+  transform: rotate(-25deg);
+  -webkit-animation-duration: 0.2s;
+          animation-duration: 0.2s;
+  -webkit-animation-name: walk;
+          animation-name: walk;
+  -webkit-animation-play-state: paused;
+          animation-play-state: paused;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+  -webkit-animation-direction: alternate;
+          animation-direction: alternate;
+  -webkit-animation-timing-function: ease-in-out;
+          animation-timing-function: ease-in-out;
+}
+#skyzinha .pawn:after {
+  content: "";
+  position: absolute;
+  right: -2.5px;
+  top: -70%;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 5px 0 0 5px;
+  border-color: transparent transparent transparent #67361f;
+  transform: rotate(25deg);
+  z-index: 1;
+}
+#skyzinha .pawn.active {
+  -webkit-animation-play-state: running;
+          animation-play-state: running;
+}
+
+@-webkit-keyframes walk {
+  0% {
+    right: -10px;
+  }
+  50% {
+    right: 10px;
+    width: 5px;
+  }
+  100% {
+    right: -10px;
+    width: 25px;
+    transform: rotate(25deg);
+    top: unset;
+    bottom: 15%;
+  }
+}
+
+@keyframes walk {
+  0% {
+    right: -10px;
+  }
+  50% {
+    right: 10px;
+    width: 5px;
+  }
+  100% {
+    right: -10px;
+    width: 25px;
+    transform: rotate(25deg);
+    top: unset;
+    bottom: 15%;
+  }
+}
+#maze {
+  background-color: #ffffff;
+  width: 100%;
+  margin-bottom: 100px;
+}
+#maze .row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+#maze .square {
+  margin: -1px;
+  border: solid 2px transparent;
+  flex-grow: 1;
+  max-width: 28px;
+  max-height: 28px;
+  height: 28px;
+}
+@media (max-width : 550px) {
+  #maze .square {
+    max-width: 16px;
+    max-height: 16px;
+  }
+}
+#maze .square.goal {
+  position: relative;
+}
+#maze .square.goal:after {
+  content: "🌰";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 16px;
+}
+@media (max-width : 550px) {
+  #maze .square.goal:after {
+    font-size: 10px;
+  }
+}
+#maze .square.border-top {
+  border-top: solid 2px #8a8546;
+}
+#maze .square.border-bottom {
+  border-bottom: solid 2px #8a8546;
+}
+#maze .square.border-left {
+  border-left: solid 2px #8a8546;
+}
+#maze .square.border-right {
+  border-right: solid 2px #8a8546;
+}
+
+.end {
+  visibility: hidden;
+}

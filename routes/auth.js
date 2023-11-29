@@ -23,6 +23,23 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.post("/setPin", async (req, res) => {
+  try {
+    const { userId, pin} = req.body;
+
+    const user = await User.findOne({_id:userId})
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    await user.setPin(pin)
+    await user.save()
+    res.redirect("/")
+  } catch (err) {
+    console.error("Error fetching users:", err);
+    res.status(500).json({ error: "Error " });
+  }
+});
+
 router.get("/logout", async (req, res) => {
      // Destroy the session
      req.session.destroy(err => {

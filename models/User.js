@@ -28,10 +28,6 @@ const userSchema = new mongoose.Schema({
     unique: false,
     trim: true,
   },
-  friends: {
-    type: Array,
-    required: false,
-  },
   imageUrl: {
     type: String,
     required: true,
@@ -50,10 +46,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  // Additional attributes can be added as needed
-  // ...
-
-  // Timestamps for created and updated
   createdAt: {
     type: Date,
     default: Date.now,
@@ -67,6 +59,31 @@ const userSchema = new mongoose.Schema({
     default: 0,
   },
   accountBalanceSignature: String,
+  pin: {
+    type: String,
+    required: false,
+    default:''
+  },
+  transactionSignature: {
+    type: String,
+  },
+  transactions: [
+    {
+      type: {
+        type: String, // 'DEPOSIT' or 'WITHDRAWAL'
+        enum: ["DEPOSIT", "WITHDRAWAL"],
+        required: true,
+      },
+      amount: {
+        type: Number,
+        required: true,
+      },
+      timestamp: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
 });
 
 // Hash the password before saving to the database
@@ -78,6 +95,20 @@ userSchema.methods.comparePassword = async function (password) {
   } catch (err) {
     throw new Error(err);
   }
+};
+
+// New method to create and verify transaction signature
+userSchema.methods.createTransactionSignature = function () {
+  const hash = crypto.createHash("sha256");
+  hash.update(`${this.transactions}${this.pin}`);
+  this.transactionSignature = hash.digest("hex");
+};
+
+// New method to update PIN
+userSchema.methods.setPin = async function (newPin) {
+  const salt = await bcrypt.genSalt(10);
+  this.pin = await bcrypt.hash(newPin, salt);
+  await this.save();
 };
 
 /// Method to set image url
@@ -125,6 +156,15 @@ userSchema.methods.verifyAccountBalance = function (secretKey) {
   return this.accountBalanceSignature === recalculatedSignature;
 };
 
-const User = mongoose.model("User", userSchema);
+
+userSchema.methods.verifyTransactionSignature = function () {
+  const hash = crypto.createHash("sha256");
+  hash.update(`${this.transactions}${this.pin}`);
+  const recalculatedSignature = hash.digest("hex");
+  return this.transactionSignature === recalculatedSignature;
+};
+
+
+const User = mongoose.models.User || mongoose.model("User", userSchema);
 
 module.exports = User;

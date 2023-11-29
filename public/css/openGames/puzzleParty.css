@@ -1,0 +1,44 @@
+
+/* body{
+    background-image: url(../img/backGround.jpg);
+} */
+
+#tiles {
+    width: 95%;
+    max-width: 350px;
+    margin: 0 auto;
+    position: relative;
+    background-color: white;
+    padding: 8px;
+    border-radius: 0.5rem;
+}
+
+
+.tile {
+    color: var(--primary);
+    font-size: 24px;
+    height: 60px;
+    width: 25%;
+    cursor: pointer;
+    
+    border: 1px solid rgb(219, 219, 219);
+}
+
+.tile:hover{
+    background-color: rgb(239, 239, 239);
+    box-shadow: none;
+    color: var(--primary);
+    border: none;
+}
+
+
+.selected.tile:hover{
+    color: rgb(239, 239, 239);
+}
+
+.selected {
+    background-color: rgb(239, 239, 239);
+    border: none;
+    color: rgb(239, 239, 239);
+    box-shadow: none;
+}

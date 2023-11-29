@@ -1,37 +1,35 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const crypto = require('crypto');
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const crypto = require("crypto");
 
 const TransactionSchema = new mongoose.Schema({
-  
-    transactionStatus: {
+  transactionStatus: {
+    type: String,
+    enum: ["initiated", "approved", "completed", "failed"],
+    default: "initiated",
+  },
+  transactionLink: {
     type: String,
     required: true,
-  }
-  ,
-  transactionLink:{
-    type:String,
-    required:true,
-    default:''
-  }
-  ,
+    default: "",
+  },
   createdAt: {
     type: Date,
     default: Date.now,
   },
-  timeStamp:{
-    type:String,
-    default:'' 
+  timeStamp: {
+    type: String,
+    default: "",
   },
   updatedAt: {
     type: Date,
     default: Date.now,
   },
-  gameLink:{
+  gameLink: {
     type: String,
-    required: true,
-    default:''
-  }
+    required: false,
+    default: "",
+  },
 });
 
 // Static method to create a new Transaction
@@ -44,8 +42,7 @@ TransactionSchema.statics.createTransaction = async function (transactionData) {
   }
 };
 
-
-TransactionSchema.pre('save', async function (next) {
+TransactionSchema.pre("save", async function (next) {
   const Transaction = this;
   const saltRounds = 10; // Increasing rounds increases hashing time
 
@@ -58,10 +55,7 @@ TransactionSchema.pre('save', async function (next) {
   } catch (err) {
     return next(err);
   }
- 
 });
-
-
 
 // Instance method to update a Transaction
 TransactionSchema.methods.updateTransaction = async function (updateData) {
@@ -75,7 +69,6 @@ TransactionSchema.methods.updateTransaction = async function (updateData) {
   }
 };
 
-
 // Instance method to remove a Transaction
 TransactionSchema.methods.removeTransaction = async function () {
   try {
@@ -85,6 +78,6 @@ TransactionSchema.methods.removeTransaction = async function () {
   }
 };
 
-const Transaction = mongoose.model('Transaction', gameSchema);
+const Transaction = mongoose.model("Transaction", TransactionSchema);
 
-module.exports = Game;
+module.exports = Transaction;

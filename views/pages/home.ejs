@@ -43,7 +43,7 @@
   <div class="body center">
     <form action="/game/createGame" class="center column" method="post">
       <div>Select a game.</div>
-      <div class="tabs-container">
+      <div class="tabs-container custom-scrollbar">
         <div
           class="tab cards cards-tab center active"
           onclick="showTab('cards')"
@@ -60,6 +60,7 @@
           class="tab draughts draughts-tab center"
           onclick="showTab('draughts')"
         ></div>
+      
       </div>
       <div class="tab-content cards-content active">
         Play Twins and Followers, a captivating card game for real money with
@@ -77,7 +78,7 @@
         Dive into Draughts, compete for real money, and become the ultimate
         checkerboard master.
       </div>
-
+    
       <div class="selected-value">
         Max Players: <span id="selectedValue">2</span>
       </div>
@@ -207,13 +208,14 @@
     <span> Update Profile Image </span>
     <span class="closeModal" id="updateProfile">&times;</span>
   </div>
-
   <form action="/updateUser" class="body center row" method="post">
     <div class="center row imageHolder">
       <img id="profileImage" src="<%=user.imageUrl%>" alt="image" srcset="" />
       <div id="changeImage">randomize</div>
     </div>
     <div class="center column">
+      <button type="button" class="modalButton" id="setPinModal">update pin</button>
+      <br>
       <input
         type="text"
         placeholder="New UserName"
@@ -255,9 +257,9 @@
   </div>
   <div class="body center openWorldModal">
     <span class="openGame"><a href="/opengames/openRuffle">Open Ruffle</a></span>
-    <span class="openGame"></span
-    ><span class="openGame"></span>
-    <span class="openGame"></span
+    <span class="openGame"><a href="/openGames/magicalMaze">Magical Maze</a></span
+    ><span class="openGame"><a href="/opengames/puzzleParty">Puzzle Party</a></span>
+    <span class="openGame"><a href="/opengames/diceDuel">Dice Duel</a></span
     ><span class="openGame"></span>
     <span class="openGame"></span
     ><span class="openGame"></span>
@@ -278,9 +280,50 @@
   <div class="footer"></div>
 </div>
 
-<div class="overLay"></div>
+<div class="modal <%=user.pin==''?'active':''%>" id="setPinModal">
+  <div class="header">
+    <span>Set A PIN </span>
+    <span class="closeModal" id="setPinModal">&times;</span>
+  </div>
+  <div class="body center column setPinModal">
+    <span>Set a secure 4 - 8 digit pin for approving transactions.</span>
+  <br>
+  <div class="center" id="pinMessage">
+
+  </div>
+    <form id="setPinForm" class="center column" action="/auth/setPin" method="post">
+      <% if (user.pin !== '') { %>
+        <input placeholder="old-pin-code" type="password" pattern="[0-9]*" inputmode="numeric" name="oldPin" id="pin" minlength="4" maxlength="8">
+    <% } %>  <input placeholder="pin-code" type="password" pattern="[0-9]*" inputmode="numeric" name="pin" id="pin" minlength="4" maxlength="8">
+    <input placeholder="confirm-pin-code" type="password" pattern="[0-9]*" inputmode="numeric" name="confirmPin" id="confirmPin" minlength="4" maxlength="8">
+    <input type="hidden" name="userId" value="<%=user._id%>">
+  
+    <button type="submit">Save</button>
+   </form>
+  </div>
+  <br />
+  <br />
+  <div class="footer"></div>
+</div>
+
+<div class="overLay <%=user.pin==''?'active':''%>"></div>
 
 <script>
+
+  const pinInput = document.getElementById('pin');
+const confirmPinInput = document.getElementById('confirmPin');
+const message = document.getElementById('pinMessage');
+
+// Add event listener to confirmPinInput for checking PIN match
+document.getElementById('setPinForm').addEventListener('submit', function(event) {
+  const pinValue = document.getElementById('pin').value;
+  const confirmPinValue = document.getElementById('confirmPin').value;
+
+  if (pinValue !== confirmPinValue) {
+      event.preventDefault(); // Prevent form submission
+      message.innerText = 'PINs do not match!';
+  }
+});
   function showTab(tabName) {
     // Hide all content divs
     document.querySelectorAll(".tab-content").forEach((content) => {

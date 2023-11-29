@@ -29,6 +29,11 @@ const User = require("./models/User");
 //   console.log(done)
 // })
 
+// User.deleteMany({}).then((done)=>{
+//   console.log(done)
+// })
+
+
 const { ensureAuthenticated } = require("./config/auth");
 
 ////////////database connection////////////

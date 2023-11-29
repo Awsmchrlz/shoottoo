@@ -1,0 +1,75 @@
+
+body{
+    background-image: url(../../img/gameBackground.jpg);
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-repeat: no-repeat;
+    background-size:100vh;
+}
+
+
+.openGameContainer{
+    flex: 1;
+}
+
+.workingOnitGif {
+ 
+    position: fixed;
+    transform: translate(0, 0);
+    animation: bounce  45s infinite;
+  top: 40%;
+  z-index: 2;
+  
+  }
+  .workingOnitGif img{
+    width: 150px;
+    
+  }
+  
+@keyframes bounce {
+    0%, 100% {
+      transform: translate(0, 0);
+    }
+  
+    5% {
+      transform: translate(90%, -10%);
+    }
+    15% {
+      transform: translate(-70%, -200%);
+    }
+  
+     30% {
+      transform: translate(-80%, 70%);
+    } 
+    40% {
+      transform: translate(-10%, 40%);
+    } 
+    47% {
+      transform: translate(-100%, 170%);
+    } 
+    56% {
+      transform: translate(130%, 190%);
+    } 
+    60% {
+      transform: translate(-120%, 70%);
+    } 
+    65% {
+      transform: translate(100%, 30%);
+    }
+    79% {
+      transform: translate(100%, 90%);
+    }
+    87% {
+      transform: translate(-190%, 100%);
+    } 
+    92% {
+      transform: translate(-10%, 70%);
+    } 
+    95% {
+      transform: translate(-10%, 170%);
+    } 
+  }

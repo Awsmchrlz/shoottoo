@@ -3,9 +3,7 @@ const User = require('../models/User');
 const Game = require('../models/Game')
 const bcrypt = require('bcrypt');
 
-// Game.deleteMany({}).then((done)=>{
-//   console.log(done)
-// })
+
 
 
 module.exports = function (passport) {
