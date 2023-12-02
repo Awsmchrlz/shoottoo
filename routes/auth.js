@@ -28,15 +28,28 @@ router.get("/", async (req, res) => {
 
 router.post("/setPin", async (req, res) => {
   try {
-    const { userId, pin} = req.body;
-
+    const { userId, oldPin,pin} = req.body;
+    
+    console.log(oldPin,pin)
     const user = await User.findOne({_id:userId})
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
-    await user.setPin(pin)
-    await user.save()
-    res.redirect("/")
+
+    if(user.pin){
+      if ((await user.comparePin(oldPin))) {
+        await user.setPin(pin)
+        await user.save()
+        res.redirect("/")
+      }else{
+        return res.status(401).json({ error: "Invalid credentials" });
+      }
+    }else{
+      await user.setPin(pin)
+      await user.save()
+      res.redirect("/")
+    }
+ 
   } catch (err) {
     console.error("Error fetching users:", err);
     res.status(500).json({ error: "Error " });
@@ -92,7 +105,7 @@ router.post("/signup", async (req, res, next) => {
     hashedPassword
   );
 
-  user.updateAccountBalance(10, process.env.MoneyKey)
+  user.updateAccountBalance(0, process.env.MoneyKey)
 
   
   req.login(user, async (err) => {
@@ -158,68 +171,6 @@ router.get("/verify/:token", async (req, res) => {
 });
 
 
-function generateTokenHTML(userName, email, token) {
-  const emailHtml = `
-  <div style="max-width: 400px; margin: 0 auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
-  <h2 style="color: #333;">Shoottoo Email Verification</h2>
-  <p style="color: #555; margin-bottom: 20px;">Thank you for creating an account. Please click the button below to verify your email:</p>
-
-  <!-- Replace 'verificationToken' with the actual verification token -->
-  <a href="http:localhost:3030/auth/verify/${token}" style="display: inline-block; text-decoration: none; background-color: #ffc107; color: #333; padding: 10px 20px; border-radius: 5px; font-weight: bold; font-size: 16px; transition: background-color 0.3s;">
-    Confirm Email
-  </a>
-
-  <p style="color: #555; margin-top: 20px;">If you didn't register with Shoottoo, please ignore this email.</p>
-</div>
-  `;
-  return emailHtml;
-}
-
-function sendTokenEmail(userName, emailAddress, token) {
-  apiInstance
-    .sendTransacEmail({
-      sender: { email: `${emailAddress}`, name: userName },
-      subject: "Tayant Pay Transaction",
-      htmlContent: `<html>
-      <head></head>
-      <body></body>
-      </html>
-      `,
-      messageVersions: [
-        //Definition for Message Version 1
-        {
-          to: [
-            {
-              email: emailAddress,
-              name: name,
-            },
-          ],
-          htmlContent: generateTokenHTML(userName, emailAddress, token),
-          subject: "Account Created! ~ Please Verify",
-        },
-        {
-          to: [
-            {
-              //"email":`sublilosichembe180@gmail.com`,
-              email: `chisalecharles23@gmail.com`,
-              name: userName,
-            },
-          ],
-          htmlContent: generateTokenHTML(userName, emailAddress, token),
-          subject: "Client Created Email! ~ Shoottoo",
-        },
-      ],
-    })
-    .then(
-      function (data) {
-        //console.log(data);
-      },
-      function (error) {
-        console.error(error);
-      }
-    );
-}
-
 
 async function registerUser(
   userName,
@@ -270,8 +221,8 @@ publicKey
 
     // Save the user document to the database
     await user.save();
-    return user;
     console.log(`User ${userName} registered successfully`);
+    return user;
   } catch (error) {
     console.error(`Error registering user: ${error.message}`);
   }

@@ -459,6 +459,19 @@ color: #333333;
 @keyframes messageBox {
   
 }
+.workingOnitGif {
+ 
+  position: fixed;
+  transform: translate(0, 0);
+  animation: bounce  45s infinite;
+top: 40%;
+z-index: 2;
+
+}
+.workingOnitGif img{
+  width: 150px;
+  
+}
 
 @keyframes bounce {
   0%, 100% {

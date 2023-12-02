@@ -793,18 +793,19 @@ class Game {
 
 
     
-
-    
     
     move(pieceId, location, capture = false) 
     {
         // console.log(pieceId, location)
+        const piece = this.board.pieces[pieceId];
+    if(piece.data.player !== mySymbol)
+    return false
     
             chessSocket.emit('ChessMove', { pieceId, location, capture,   gameLink:document.getElementById('gameLinkInput').value ,senderId:socket3.id});
             this.sendFlag = false
         
-
-        const piece = this.board.pieces[pieceId];
+        // console.log('my side', mySymbol)
+        console.log(piece.data)
         const castledId = this.handleCastling(piece, location);
         piece.move(this.moveIndex);
         if (castledId) {
@@ -831,8 +832,8 @@ class Game {
 
     recieveMove(pieceId, location, capture = false) 
     {
-      
         const piece = this.board.pieces[pieceId];
+       
         const castledId = this.handleCastling(piece, location);
         piece.move(this.moveIndex);
         if (castledId) {

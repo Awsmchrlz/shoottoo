@@ -230,15 +230,40 @@ p strong{
 .modal h2{
   font-family: inherit;
 }
-h2 span.win{
+
+
+.win{
   color: var(--primary);
-  font-size: 40px;
+  font-size: 25px;
 }
-h2 span.loss{
-  color: red;
-  font-size: 30px;
+.loss{
+  color: rgb(37, 37, 37);
+  font-size: 20px;
 }
-h2 span.stake{
+.stake{
 color: #0c8410;
-font-size: 30px;
+font-size: 20px;
+font-weight: 200;
+font-style: italic;
+}
+
+.gameTransactionModal{
+  width: 80%;
+}
+.gameTransactionModal button{
+  font-size: 18px;
+  padding: 5px;
+}
+
+.gameTransactionModal h2 span{
+  width: fit-content;
+}
+
+.gameTransactionModal h2{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 20px;
+  border-bottom: 2px solid rgb(78, 78, 78);
 }

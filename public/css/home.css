@@ -287,3 +287,68 @@ background-color: #ddd;
   .setPinModal input{
     width: 70%;
   }
+
+  #transact .tab-content {
+    width: 90%;
+  }
+  .transactionsContainer{
+    max-height: 200px;
+    overflow-y: scroll;
+    min-width: fit-content;
+  padding-top: 10px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   
+  }
+  
+  .transactionsContainer .transactionItem{
+width: 100%;
+justify-content: space-between;
+box-shadow: 0px 0px 3px ;
+margin: 2px;
+margin-bottom: 5px;
+display: flex;
+height: fit-content;
+padding: 4px;
+align-items: center;
+justify-content: center;
+flex-direction: column;
+  }
+
+.transactionsContainer a div{
+  display: flex;
+align-items: center;
+justify-content: space-between;
+  flex-direction: row;
+}
+
+  .transactionsContainer a span{
+    
+    width: fit-content;
+    margin: 4px;
+  }
+  .transactionsContainer .amountHolder{
+    color: black;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    flex-direction: row;
+  }
+  .transactionsContainer .amount{
+    font-weight: 700;
+    color: var(--primary);
+    margin: 0;
+    border: none;
+  
+  }
+  .transactionsContainer button{
+    width: 80%;
+  }
+
+  .DEPOSIT{
+
+  }

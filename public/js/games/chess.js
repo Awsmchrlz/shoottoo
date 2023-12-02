@@ -19,8 +19,14 @@ socket3.on("connect", () => {
 
 // JavaScript for client-side logic
 // Function to handle game events on the client side
-socket3.on("gameDetails", ({players}) => {
+socket3.on("gameDetails", ({players, paidPlayers}) => {
     let playersString = ''
+    if(paidPlayers.includes(id)){
+      document.getElementById("gameTransactionModal").classList.remove("active")
+      document.getElementById("overLay").classList.remove("active")
+   
+    }
+
     players.forEach((player, index)=>{
       var perspective = player.symbol;
       if(player.userId == id){

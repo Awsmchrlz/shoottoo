@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const User = require('./User')
+const Game = require('./game')
+
 const TransactionSchema = new mongoose.Schema({
   transactionStatus: {
     type: String,
@@ -17,10 +19,7 @@ const TransactionSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  timeStamp: {
-    type: String,
-    default: "",
-  },
+
   updatedAt: {
     type: Date,
     default: Date.now,
@@ -160,11 +159,17 @@ TransactionSchema.methods.processDeposit = async function (signatureKey) {
       const isIntegrityValid = user.verifyAccountBalance(signatureKey);
       if (isIntegrityValid) {
         
-        const totalBalance = parseInt(user.accountBalance)+parseInt(this.amount)
+        const accountBalance = parseInt(user.accountBalance)
+        const transactionTotal = Math.abs(this.amount)
+        const totalBalance = accountBalance + transactionTotal
+
         user.updateAccountBalance(totalBalance, signatureKey);
         
         this.transactionStatus = 'completed';
         this.updatedAt = Date.now();
+        // console.log("this iss",this)
+        user.transactions.push(this);
+        // await user.save()
         await this.save();
       }else{
         throw new Error('Transaction integrity compromised.');
@@ -181,6 +186,105 @@ TransactionSchema.methods.processDeposit = async function (signatureKey) {
     throw new Error(error.message);
   }
 };
+
+
+// Inside the TransactionSchema
+TransactionSchema.methods.processWithdraw = async function (signatureKey) {
+  try {
+    const isApproved = await checkTransactionApproval(this._id); // Check transaction approval status
+
+    if (isApproved) {
+      const user = await User.findById(this.senderId);
+      // console.log(user)
+      // Verify integrity using signature key
+      const isIntegrityValid = user.verifyAccountBalance(signatureKey);
+      if (isIntegrityValid) {
+        let totalDeduct = Math.abs(this.amount);
+        let userBalance = parseInt(user.accountBalance)
+      const newBalance = userBalance - totalDeduct;
+        console.log('new balance',newBalance)
+        user.updateAccountBalance(newBalance, signatureKey);
+        
+        this.transactionStatus = 'completed';
+        this.updatedAt = Date.now();
+        console.log("this iss",this)
+        user.transactions.push(this);
+  
+        await this.save();
+      }else{
+        throw new Error('Transaction integrity compromised.');
+      }  
+
+      // Update user account balance
+      // Update transaction status to completed
+
+      return true; // Transaction processed successfully
+    } else {
+      throw new Error('Transaction not approved.');
+    }
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+// Inside the TransactionSchema
+TransactionSchema.methods.processGameEntry = async function (signatureKey) {
+  try {
+    const isApproved = await checkTransactionApproval(this._id); // Check transaction approval status
+  if(isApproved){
+console.log(this.senderId)
+    const user = await User.findOne({_id:this.senderId});
+    console.log(user)
+    const game = await Game.findOne({gameLink:this.gameLink});
+    console.log(game)
+    // Verify integrity using signature key
+    const isIntegrityValid = user.verifyAccountBalance(signatureKey);
+    const isgameIntegrityValid = game.verifyAccountBalance(signatureKey);
+    
+    if (isIntegrityValid && isgameIntegrityValid) {
+      
+      const totalBalance = parseInt(user.accountBalance)
+      const transactionTotal = Math.abs(this.amount)
+      const newUserBalance = totalBalance-transactionTotal
+      user.updateAccountBalance(newUserBalance, signatureKey);
+
+      const totalGameBalance = parseInt(game.accountBalance)
+      const newGameTotal = totalGameBalance+transactionTotal
+      
+      game.updateAccountBalance(newGameTotal, signatureKey);
+
+      this.transactionStatus = 'completed';
+      this.updatedAt = Date.now();
+      // console.log("this iss",this)
+      game.paidPlayers.push(user._id)
+      user.transactions.push(this);
+      console.log(game)
+      // await user.save()
+     
+      await this.save();
+    }else{
+      throw new Error('Transaction integrity compromised.');
+    }  
+
+
+    // Update user account balance
+    // Update transaction status to completed
+
+    return true; // Transacti
+
+    
+
+    } else {
+      throw new Error('Transaction not approved.');
+    }
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+
+
+
 
 TransactionSchema.methods.verifyDepositIntegrity = function (signatureKey, recipient) {
   try {

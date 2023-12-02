@@ -165,16 +165,17 @@ const move = (direction)=>{
     y -= 1;
     sky.style.top =  step.y * y + 'px';
     playerpos.y = y;
-    //console.log(y, sky.style.top);
+    console.log(y, sky.style.top);
    }
    break;
   }
+  
   case 'r' : {
     if(x+1<mazeSize && disp[y][x][1] != 0) { 
      x += 1;
     sky.style.left =  step.x * x + 'px';
     playerpos.x = x;
-    //console.log(x, sky.style.left);
+    console.log(x, sky.style.left);
    }
   break;
   }
@@ -183,7 +184,7 @@ const move = (direction)=>{
     y += 1;
     sky.style.top =  step.y * y + 'px';
     playerpos.y = y;
-    //console.log(y, sky.style.top);
+    console.log(y, sky.style.top);
    }
   break;
   }
@@ -192,7 +193,7 @@ const move = (direction)=>{
      x -= 1;
     sky.style.left =  step.x * x + 'px';
     playerpos.x = x;
-    //console.log(x, sky.style.left);
+    console.log(x, sky.style.left);
    }
   break;
   }

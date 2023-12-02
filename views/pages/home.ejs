@@ -155,7 +155,7 @@
   <div class="footer"></div>
 </div>
 
-<div class="modal active" id="transact">
+<div class="modal" id="transact">
   <div class="header">
     <span>Transact</span>
     <span class="closeModal" id="transact">&times;</span>
@@ -173,7 +173,7 @@
       </div>
     </div>
 
-    <div class="tab-content column deposit-content active">
+    <div class="tab-content column active deposit-content">
       <div>Deposit 100K request from Account - <%=user.phoneNumber%></div>
       <form action="/transaction/deposit" class="center column" method="post">
         <input
@@ -190,19 +190,46 @@
       </form>
     </div>
     <div class="tab-content column transactions-content">
- <%=user.transactions%>
+<div class="transactionsContainer center column">
+  <br>
+ 
+  <div>
+  <%user.transactions.forEach((transaction)=>{%>
+  <a href="/transaction/getTransaction/<%=transaction._id%>" class="transactionItem center row">
+    <div>  <span><%=transaction.transactionType%></span>
+      <span class="amountHolder">K<div class="amount"><%=transaction.amount%></div></span>
+    </div>
+      <button>view</button>
+    </a>
+    <%})%>
+  </div>
+</div>
     </div>
   
     <div class="tab-content withdraw-content">
       <div>Withdraw 100K from account - <%=user.phoneNumber%></div>
-      <form action="" class="center column" method="post">
+      <form action="/transaction/withdraw" class="center column" method="post">
         <input
           type="text"
           class=""
-          name="depositAmount"
+          name="amount"
           placeholder="Enter Amount"
           id=""
         />
+        <input
+        type="text"
+        class=""
+        name="pin"
+        placeholder="Enter Pin"
+        id=""
+        type="password" pattern="[0-9]*"
+         inputmode="numeric" 
+         minlength="4" maxlength="8"
+      />
+        
+        <input type="hidden" name="phoneNumber"  value="<%=user.phoneNumber%>">
+        <input type="hidden" name="userId" value="<%=user._id%>">
+    
         <br />
         <button type="submit">Withdraw</button>
       </form>
@@ -301,7 +328,7 @@
   </div>
     <form id="setPinForm" class="center column" action="/auth/setPin" method="post">
       <% if (user.pin !== '') { %>
-        <input placeholder="old-pin-code" type="password" pattern="[0-9]*" inputmode="numeric" name="oldPin" id="pin" minlength="4" maxlength="8">
+        <input placeholder="old-pin-code" type="password" pattern="[0-9]*" inputmode="numeric" name="oldPin" id="oldPin" minlength="4" maxlength="8">
     <% } %>  <input placeholder="pin-code" type="password" pattern="[0-9]*" inputmode="numeric" name="pin" id="pin" minlength="4" maxlength="8">
     <input placeholder="confirm-pin-code" type="password" pattern="[0-9]*" inputmode="numeric" name="confirmPin" id="confirmPin" minlength="4" maxlength="8">
     <input type="hidden" name="userId" value="<%=user._id%>">

@@ -69,23 +69,7 @@ const userSchema = new mongoose.Schema({
   },
   transactions: [
     {
-      transactionType: {
-        type: String, // 'DEPOSIT' or 'WITHDRAWAL'
-        enum: ["DEPOSIT", "WITHDRAWAL","GAME-ENTRY", "TRANSFER", "RECIEVE"],
-        required: true,
-      },
-      amount: {
-        type: Number,
-        required: true,
-      },
-      timestamp: {
-        type: Date,
-        default: Date.now,
-      },
-      transactionId:{
-        type:String,
-        required:true
-      }
+  
     },
   ],
 });
@@ -96,6 +80,15 @@ const userSchema = new mongoose.Schema({
 userSchema.methods.comparePassword = async function (password) {
   try {
     return await bcrypt.compare(password, this.password);
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+// Method to compare pins during login
+userSchema.methods.comparePin = async function (pin) {
+  try {
+    return await bcrypt.compare(pin, this.pin);
   } catch (err) {
     throw new Error(err);
   }
@@ -163,13 +156,6 @@ userSchema.methods.verifyAccountBalance = function (secretKey) {
 
 
 
-userSchema.methods.pushTransaction = function ({type, amount, timestamp, signature,transactionId}) {
-  this.transactions.push({
-    type, amount, signature,transactionId,
-    timestamp: Date.now(),
-    // Additional transaction details...
-  });
-}
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);
 

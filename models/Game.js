@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 
+
 const gameSchema = new mongoose.Schema({
   gameType: {
     type: String,
@@ -55,7 +56,16 @@ const gameSchema = new mongoose.Schema({
   gameLog:{
     type:Array,
     default:[]
-  }
+  },
+  accountBalance:{
+    type: Number,
+    default: 0,
+    },
+    paidPlayers:{
+      type:Array,
+      default:[]
+    },
+    accountBalanceSignature: String,
 });
 
 // Static method to create a new game
@@ -77,7 +87,10 @@ gameSchema.pre('save', async function (next) {
     if (game.isModified('password')) {
       const hashedPassword = await bcrypt.hash(game.password, saltRounds);
       game.password = hashedPassword;
+      
     }
+
+    
     return next();
   } catch (err) {
     return next(err);
@@ -121,6 +134,39 @@ gameSchema.methods.removeGame = async function () {
   }
 };
 
-const Game = mongoose.model('Game', gameSchema);
+// Method to update and sign account balance
+gameSchema.methods.updateAccountBalance = async function (
+  newBalance,
+  secretKey
+) {
+  // Update account balance
+  this.accountBalance = newBalance;
+
+  // Create a hash of the account balance
+  const hash = crypto.createHash("sha256");
+  hash.update(`${this.accountBalance}${secretKey}`);
+  const signature = hash.digest("hex");
+
+  // Verify the signature before saving
+
+  // Save the signature to the user's document
+  this.accountBalanceSignature = signature;
+
+  // Save the updated balance
+  await this.save();
+  
+};
+
+// Method to verify account balance integrity
+gameSchema.methods.verifyAccountBalance = function (secretKey) {
+  // Recreate the hash and compare with the stored signature
+  const hash = crypto.createHash("sha256");
+  hash.update(`${this.accountBalance}${secretKey}`);
+  const recalculatedSignature = hash.digest("hex");
+
+  return this.accountBalanceSignature === recalculatedSignature;
+};
+
+const Game =  mongoose.models.Game ||mongoose.model('Game', gameSchema);
 
 module.exports = Game;

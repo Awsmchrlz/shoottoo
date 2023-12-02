@@ -1,0 +1,10 @@
+
+body{
+    background-image: url(../img/backGround.jpg);
+}
+
+h2{
+    z-index: 2;
+    font-size: 30px;
+    color: aliceblue;
+}

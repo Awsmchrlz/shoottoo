@@ -27,7 +27,9 @@ module.exports = function (io) {
 
       // Save the game details to the database
       const newGame = await Game.createGame(gameData);
-      newGame.save();
+      newGame.updateAccountBalance(0, process.env.MoneyKey)
+
+      // newGame.save();
       let gamePage = "errorPage"; // Default game page for unknown game types or errors
       if (newGame) {
         gamePage = `gamePages/` + newGame.gameType; // Cards game page
@@ -51,11 +53,12 @@ module.exports = function (io) {
     }
   });
 
-  router.post("/joinGame", async (req, res) => {
-    try {
-      const { gameLink } = req.body;
-      const user = req.user;
 
+  router.get("/joinGame/:gameLink", async (req, res) => {
+    try {
+
+      const { gameLink } = req.params;
+      const user = req.user;
       // Query the game details using the provided game link
       const game = await Game.findOne({ gameLink });
 
@@ -66,11 +69,9 @@ module.exports = function (io) {
       }
 
       const isPlayerInGame = true;
-
       // Check if the game is not full
       if (game.players.length <= game.maxPlayers || isPlayerInGame) {
         // Add the player to the game
-
         // Save the updated game with the new player
         await game.save();
 
@@ -80,7 +81,50 @@ module.exports = function (io) {
           gamePage = `gamePages/${game.gameType}`; // Redirect to the specific game page
         }
         // Add other game types as needed
+        // Render the game page with the retrieved game object
+        res.render(gamePage, {
+          game,
+          style: game.gameType,
+          user,
+          script: game.gameType,
+          layout: "layouts/gameLayout",
+        });
+      } else {
+        // Game is full, handle accordingly
+        res.redirect("/game/gamefull");
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
 
+  router.post("/joinGame", async (req, res) => {
+    try {
+
+      const { gameLink } = req.body;
+      const user = req.user;
+      // Query the game details using the provided game link
+      const game = await Game.findOne({ gameLink });
+
+      if (!game) {
+        // Handle case when the game link doesn't exist
+        res.redirect("/game/gamenotfound");
+        return;
+      }
+
+      const isPlayerInGame = true;
+      // Check if the game is not full
+      if (game.players.length <= game.maxPlayers || isPlayerInGame) {
+        // Add the player to the game
+        // Save the updated game with the new player
+        await game.save();
+
+        // Determine the redirect URL based on the game type from the retrieved game details
+        let gamePage = "errorPage"; // Default game page for unknown game types or errors
+        if (game) {
+          gamePage = `gamePages/${game.gameType}`; // Redirect to the specific game page
+        }
+        // Add other game types as needed
         // Render the game page with the retrieved game object
         res.render(gamePage, {
           game,
@@ -206,8 +250,8 @@ module.exports = function (io) {
     socket.on(
       "JoinChessGame",
       ({ userName, userId, gameLink, gameId, imageUrl }) => {
-        // if (game.players.length < 2) {
         Game.findOne({ _id: gameId, gameType: "chess" }).then((game) => {
+     
           if (game) {
             console.log("game likk", gameLink);
             socket.join(gameLink);
@@ -218,19 +262,22 @@ module.exports = function (io) {
                 flag = true;
               }
             });
-            if (!flag) {
+            
+            if (!flag && game.players.length <= 2) {
               game.playerJoin({
                 userName,
                 imageUrl,
                 userId,
                 symbol: game.players.length == 0 ? "WHITE" : "BLACK",
               });
+            
             }
             console.log("game found", game);
-            io.to(gameLink).emit("gameDetails", { players: game.players });
+            io.to(gameLink).emit("gameDetails", { players: game.players,paidPlayers:game.paidPlayers });
+        
           }
+        
         });
-        // }
       }
     );
     
