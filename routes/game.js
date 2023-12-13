@@ -250,7 +250,7 @@ module.exports = function (io) {
     socket.on(
       "JoinChessGame",
       ({ userName, userId, gameLink, gameId, imageUrl }) => {
-        Game.findOne({ _id: gameId, gameType: "chess" }).then((game) => {
+        Game.findOne({ _id: gameId, gameType: "chess"}).then((game) => {
      
           if (game) {
             console.log("game likk", gameLink);
@@ -273,7 +273,7 @@ module.exports = function (io) {
             
             }
             console.log("game found", game);
-            io.to(gameLink).emit("gameDetails", { players: game.players,paidPlayers:game.paidPlayers });
+            io.to(gameLink).emit("gameDetails", { players: game.players,paidPlayers:game.paidPlayers,stake:game.stakePerGame });
         
           }
         

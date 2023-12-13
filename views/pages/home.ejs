@@ -174,8 +174,10 @@
     </div>
 
     <div class="tab-content column active deposit-content">
-      <div>Deposit 100K request from Account - <%=user.phoneNumber%></div>
+      <div>Iniate A Deposit Request From A Mobile Money Account. MTN & AIRTEL Only.</div>
+     <br>
       <form action="/transaction/deposit" class="center column" method="post">
+       <input type="text" phoneNumber value="<%=user.phoneNumber%>" placeholder="MTN OR AIRTEL">
         <input
           type="text"
           class=""
@@ -295,7 +297,7 @@
     <span class="openGame"><a href="/openGames/magicalMaze">Magical Maze</a></span
     ><span class="openGame"><a href="/opengames/puzzleParty">Puzzle Party</a></span>
     <span class="openGame"><a href="/opengames/diceDuel">Dice Duel</a></span
-    ><span class="openGame"></span>
+    ><span class="openGame"><a href="/opengames/slots">slots</a></span>
     <span class="openGame"></span
     ><span class="openGame"></span>
   </div>

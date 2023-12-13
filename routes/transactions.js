@@ -2,10 +2,10 @@ const express = require("express");
 const router = express.Router();
 const crypto = require('crypto');
 
-const User = require("../models/user");
-const Game = require("../models/game");
+const User = require("../models/User");
+const Game = require("../models/Game");
 
-const Transaction = require("../models/transaction");
+const Transaction = require("../models/Transaction");
 require("dotenv").config();
 
 // Deposit endpoint

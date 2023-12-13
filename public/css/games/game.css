@@ -267,3 +267,15 @@ font-style: italic;
   font-size: 20px;
   border-bottom: 2px solid rgb(78, 78, 78);
 }
+
+#startGameModal.modal{
+  
+}
+#startGameButton{
+  background-color: red;
+  color: white;
+  font-size: 30px;
+  padding: 5px 10px;
+  width: fit-content;
+
+}

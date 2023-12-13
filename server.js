@@ -43,11 +43,13 @@ const { ensureAuthenticated } = require("./config/auth");
 ////////////database connection////////////
 
 const localDB = "mongodb://localhost:27017/shoottoodb";
+const liveDB = "mongodb+srv://awsmchrlz:angela%40heart4l@cluster0.ml09lpy.mongodb.net/?retryWrites=true&w=majority"
 // process.env.MONGODBURL
+
 
 mongoose.set("strictQuery", true);
 mongoose
-  .connect(localDB, { useNewUrlParser: true })
+  .connect(liveDB, { useNewUrlParser: true })
   .then(() => {
     console.log("database is connected");
   })
@@ -55,6 +57,7 @@ mongoose
 
 ////setting up the server///////
 // Configure Passport
+
 
 require("./config/passport")(passport);
 

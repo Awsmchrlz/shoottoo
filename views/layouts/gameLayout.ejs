@@ -26,6 +26,7 @@
       href="https://fonts.googleapis.com/css2?family=Agbalumo&family=Barlow:wght@500&display=swap"
       rel="stylesheet"
     />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   </head>
 
   <body>
@@ -47,8 +48,8 @@
     <div class="gameDetails">
       <h3><%=game.gameType%></h3>
       <h2><%=game.roomName%></h2>
-      <p>Stake per Game: <span>K<%= game.stakePerGame %></span></p>
-      <p>Total Paid to Game: <span>K<%= game.accountBalance%></span></p>
+      <p id="paidPlayers"></p>
+      <p>Total Winnings: <span>K<%= (game.stakePerGame*2)*0.95%></span></p>
      
       <!-- Players section -->
       <div class="players-section">
@@ -83,11 +84,11 @@
       <div class="footer"></div>
     </div>
 
-    <div class="modal active" id="gameTransactionModal">
+    <div class="modal" id="gameTransactionModal">
       <br>
       <div class="header">
         <span>Confirm Wager</span>
-        <span class="closeModal" id="gameTransactionModal">&times;</span>
+        <span class="closeModal" id="">&times;</span>
       </div>
       <br>
       <div class="body center column gameTransactionModal">
@@ -124,6 +125,20 @@
       <div class="footer"></div>
     </div>
 
+    <div class="modal" id="startGameModal">
+      <div class="header">
+        <span>Start Game</span>
+        <span class="closeModal" id="startGameModal">&times;</span>
+      </div>
+      <div class="body center column startGameModal">
+        <h2>All Players have successfully waged and are ready. Click to start the game!</h2>
+    <br>
+        <button id="startGameButton">Start Game</button>
+      </div>
+      <br />
+      <div class="footer"></div>
+    </div>
+    
     <div id="overLay" class="overLay active"></div>
     <input type="hidden" value="<%=game.gameLink%>" id="gameLinkInput" />
     <input type="hidden" value="<%=game._id%>" id="gameIdInput" />

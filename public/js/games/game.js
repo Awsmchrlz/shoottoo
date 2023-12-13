@@ -79,6 +79,11 @@ copyButton.addEventListener("click", async () => {
   try {
     await navigator.clipboard.writeText(gameLink);
     copyButton.innerText = "Copied";
+    setTimeout(()=>{
+      document.querySelector('#gameLinkModal.modal').classList.remove("active")
+      document.getElementById("overLay").classList.remove("active")
+   
+    },1400)
   } catch (err) {
     console.error("Failed to copy: ", err);
     copyButton.innerText = "Error Copy Manually";
@@ -86,32 +91,35 @@ copyButton.addEventListener("click", async () => {
 });
 
 
-gameSocket.on("gameDetails", ({players}) => {
-  let playersString = ''
-if(!game){
-  game = new Game();
-}
-initializeBoard(game.board);
-game.players = players
-players.forEach((player, index)=>{
-  if(player.userId == id){
-      mySymbol = player.symbol
-      playersString += `
-      <div class="center column">
-      <img src=${player.imageUrl}>
-      <div>Me-${player.symbol}</div>
-      </div>`
-  }else{
+// gameSocket.on("gameDetails", ({players}) => {
+//   let playersString = ''
+// if(!game){
+//   game = new Game();
+// }
 
-      playersString += ` 
-      <div class="center column">
-      <img src=${player.imageUrl}>
-      <div>${player.userName}-${player.symbol}</div>
-      </div>`
-  }
-  index<(players.length-1)?playersString += '<span>Vs</span>':''
-})
-console.log(players)
-document.getElementById("gamePlayers").innerHTML = `${playersString}`;
+// initializeBoard(game.board);
 
-});
+// game.players = players
+
+// players.forEach((player, index)=>{
+//   if(player.userId == id){
+//       mySymbol = player.symbol
+//       playersString += `
+//       <div class="center column">
+//       <img src=${player.imageUrl}>
+//       <div>Me-${player.symbol}</div>
+//       </div>`
+//   }else{
+
+//       playersString += ` 
+//       <div class="center column">
+//       <img src=${player.imageUrl}>
+//       <div>${player.userName}-${player.symbol}</div>
+//       </div>`
+//   }
+//   index<(players.length-1)?playersString += '<span>Vs</span>':''
+// })
+// console.log(players)
+// document.getElementById("gamePlayers").innerHTML = `${playersString}`;
+
+// });

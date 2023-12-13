@@ -73,6 +73,21 @@ router.get("/magicalMaze", async (req, res) => {
   
   
 
+router.get("/slots", async (req, res) => {
+
+    const user = req.user;
+    try {
+        res.render("openGames/slots", {
+            style:"slots",
+            user,
+            script:'slots',
+            layout: "layouts/openGame",
+        });
+    } catch (err) {
+        console.error("Error:", err);
+        res.status(500).json({ error: "Error" });
+    }
+});
 
 
 module.exports = router;
