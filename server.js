@@ -50,7 +50,7 @@ const liveDB = "mongodb+srv://awsmchrlz:angela%40heart4l@cluster0.ml09lpy.mongod
 
 mongoose.set("strictQuery", true);
 mongoose
-  .connect(liveDB, { useNewUrlParser: true })
+  .connect(localDB, { useNewUrlParser: true })
   .then(() => {
     console.log("database is connected");
   })
