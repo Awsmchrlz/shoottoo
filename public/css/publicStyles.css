@@ -19,7 +19,7 @@
     box-sizing: border-box;
     position: relative;
     font-family: 'Agbalumo', sans-serif;
-    user-select: none;
+    user-select: none !important;
   
     /* Additional styles for better button appearance */
     cursor: pointer;
