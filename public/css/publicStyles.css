@@ -28,7 +28,7 @@
 body{
     position: fixed;
     width: 100vw;
-    height: 100vh;
+    height: 100% !important;
     max-height: 100vh !important;
     background-color: var(--secondary);
     display: flex;
