@@ -46,7 +46,7 @@
     </nav>
 
     <div class="gameDetails">
-      <h3><%=game.gameType%></h3>
+  
       <h2><%=game.roomName%></h2>
       <p id="paidPlayers"></p>
       <p>Total Winnings: <span>K<%= (game.stakePerGame*2)*0.95%></span></p>
@@ -56,7 +56,7 @@
         <div id="gamePlayers" class="center"></div>
       </div>
       <div id="gameMessages"></div>
-      <div id="gameStatus">game state</div>
+    
     </div>
 
     <div class="gameContainer center column"><%- body%></div>
