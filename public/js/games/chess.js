@@ -12,6 +12,9 @@ const imageUrl = document.getElementById("imageUrlInput").value;
 let mySymbol = ''
 const gameId = document.getElementById("gameIdInput").value;
 
+var initialTurn = "WHITE";
+var myPerspective = ''      
+
 socket3.on("connect", () => {
   console.log("Connected to server");
   socket3.emit("JoinChessGame", {userId:id,userName:name, imageUrl, gameId, gameLink:document.getElementById('gameLinkInput').value});
@@ -46,6 +49,7 @@ socket3.on("gameDetails", ({players, paidPlayers,stake}) => {
       var perspective = player.symbol;
      
       if(player.userId == id){
+        myPerspective = player.symbol;
         if(perspective === 'BLACK'){
           document.getElementById("black-perspective").checked = true
         }
@@ -55,19 +59,13 @@ socket3.on("gameDetails", ({players, paidPlayers,stake}) => {
         }
 
         mySymbol = player.symbol
-      var initialTurn = "WHITE";
+    
         playersString += `
         <div class="center column">
         <img src=${player.imageUrl}>
         <div>Me-${perspective}</div>
         </div>`
-        if(!chessGame && startGame){
-          chessGame = new Game(Utils.getInitialPieces(), initialPositions, initialTurn);
-          view = new View(document.getElementById("board"), chessGame, perspective);
-          const control = new Control(chessGame, view);
-         
-          // control.autoplay();
-        }
+      
         if(haveBothPaid){
            
           document.getElementById("gameLinkModal").classList.remove("active")
@@ -111,3 +109,14 @@ socket3.on("updateChessBoard", ({pieceId ,location, capture,senderId}) => {
 
 
 });
+
+socket3.on("beginGame",()=>{
+  console.log("sds")
+  if(!chessGame){
+    chessGame = new Game(Utils.getInitialPieces(), initialPositions, initialTurn);
+    view = new View(document.getElementById("board"), chessGame, myPerspective);
+    const control = new Control(chessGame, view);
+   
+    // control.autoplay();
+  }
+})

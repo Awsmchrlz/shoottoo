@@ -280,7 +280,10 @@ module.exports = function (io) {
         });
       }
     );
-    
+    socket.on("startGame",({link})=>{
+      socket.join(link)
+      io.to(link).emit("beginGame")
+    })
     socket.on(
     "joinCheckersGame",
     ({ userName, userId, gameLink, gameId, imageUrl }) => {

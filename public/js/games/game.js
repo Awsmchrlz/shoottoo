@@ -90,7 +90,11 @@ copyButton.addEventListener("click", async () => {
   }
 });
 
+const startGameButton = document.getElementById('startGameButton')
 
+startGameButton.addEventListener('click',()=>{
+  gameSocket.emit("startGame",{link})
+})
 // gameSocket.on("gameDetails", ({players}) => {
 //   let playersString = ''
 // if(!game){

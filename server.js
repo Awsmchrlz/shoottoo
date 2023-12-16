@@ -59,7 +59,6 @@ mongoose
 ////setting up the server///////
 // Configure Passport
 
-
 require("./config/passport")(passport);
 
 app.set("view engine", "ejs");
